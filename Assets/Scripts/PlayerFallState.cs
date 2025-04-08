@@ -24,7 +24,6 @@ public class PlayerFallState : PlayerAirState
         
         if (player.GroundDetected())
         {
-            Debug.Log("退出");
             stateMachine.ChangeState(player.idleState);
         }
     }

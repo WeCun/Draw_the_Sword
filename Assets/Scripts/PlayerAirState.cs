@@ -11,6 +11,7 @@ public class PlayerAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        
     }
 
     public override void Exit()
@@ -24,19 +25,26 @@ public class PlayerAirState : PlayerState
         
         if (xInput != 0)
         {
-            //player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);
-            AirMove();
+            player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);
         }
-            
+        else
+        {
+            player.SetVelocity(rb.velocity.x * 0.9f, rb.velocity.y);
+        }
+
+        if (player.WallDetected())
+        {
+            stateMachine.ChangeState(player.wallSlide);
+        }
     }
 
-    private void AirMove()
-    {
-        
-        rb.position = new Vector2(rb.position.x + xInput * player.moveSpeed * Time.deltaTime, rb.position.y);
-        if(xInput == 1 && player.facingDir == -1)
-            player.Flip();
-        if(xInput == -1 && player.facingDir == 1)
-            player.Flip();
-    }
+    // private void AirMove()
+    // {
+    //     
+    //     rb.position = new Vector2(rb.position.x + xInput * player.moveSpeed * Time.deltaTime, rb.position.y);
+    //     if(xInput == 1 && player.facingDir == -1)
+    //         player.Flip();
+    //     if(xInput == -1 && player.facingDir == 1)
+    //         player.Flip();
+    // }
 }

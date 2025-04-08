@@ -13,7 +13,6 @@ public class PlayerJumpState : PlayerAirState
     public override void Enter()
     {
         base.Enter();
-        rb.velocity = new Vector2(0, 0);
         rb.AddForce(Vector2.up * player.initialJumpForce, ForceMode2D.Impulse);
         jumpTimer = 0;
         isJumping = true;

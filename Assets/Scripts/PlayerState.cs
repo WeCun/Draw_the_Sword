@@ -14,6 +14,7 @@ public class PlayerState
     protected Rigidbody2D rb;
 
     protected float stateTimer;
+    protected bool animTrigger;
     
     public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _animName)
     {
@@ -26,6 +27,7 @@ public class PlayerState
     {
         player.anim.SetBool(animName, true);
         rb = player.rb;
+        animTrigger = false;
     }
 
     public virtual void Exit()
@@ -40,5 +42,10 @@ public class PlayerState
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
         player.anim.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+    public virtual void AnimationFinish()
+    {
+        animTrigger = true;
     }
 }

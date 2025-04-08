@@ -24,8 +24,11 @@ public class PlayerGroundState : PlayerState
         if (Input.GetButtonDown("Jump") && player.GroundDetected())
         {
             stateMachine.ChangeState(player.jumpState);
-            return;
         }
+        
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+            stateMachine.ChangeState(player.primaryAttack);
+            
         
         if(!player.GroundDetected())
             stateMachine.ChangeState(player.fallState);
