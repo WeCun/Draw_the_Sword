@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public PlayerWallSlide wallSlide { get; private set; }
     public PlayerWallJunpState wallJump { get; private set; }
     public PlayerPrimaryAttackState primaryAttack { get; private set; }
+    public PlayerAimState aimState { get; private set; }
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDis;
@@ -52,6 +53,7 @@ public class Player : MonoBehaviour
         wallSlide = new PlayerWallSlide(this, stateMachine, "WallSlide");
         wallJump = new PlayerWallJunpState(this, stateMachine, "WallJump");
         primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
+        aimState = new PlayerAimState(this, stateMachine, "Aim");
     }
 
     void Start()
@@ -71,6 +73,11 @@ public class Player : MonoBehaviour
                 dashDir = facingDir;
             
             stateMachine.ChangeState(dashState);            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            stateMachine.ChangeState(aimState);
         }
     }
     

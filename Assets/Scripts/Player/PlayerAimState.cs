@@ -22,5 +22,13 @@ public class PlayerAimState : PlayerState
     public override void Update()
     {
         base.Update();
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+            stateMachine.ChangeState(player.idleState);
+
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(mousePos.x > player.transform.position.x && player.facingDir == -1)
+            player.Flip();
+        if(mousePos.x < player.transform.position.x && player.facingDir == 1)
+            player.Flip();
     }
 }
