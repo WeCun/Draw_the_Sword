@@ -49,7 +49,6 @@ public class PlayerJumpState : PlayerAirState
 
         if (rb.velocity.y < 0.05f)
         {
-            Debug.Log("1");
             stateMachine.ChangeState(player.fallState);
         }
     }

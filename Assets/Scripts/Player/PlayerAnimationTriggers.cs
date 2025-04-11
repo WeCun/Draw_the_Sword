@@ -10,4 +10,9 @@ public class PlayerAnimationTriggers : MonoBehaviour
     {
         player.AnimationTrigger();
     }
+
+    public void ThrowKuNai()
+    {
+        SkillManager.instance.kunai.CreateKuNai();
+    }
 }
