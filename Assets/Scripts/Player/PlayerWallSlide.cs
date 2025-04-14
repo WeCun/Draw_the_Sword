@@ -11,7 +11,7 @@ public class PlayerWallSlide : PlayerState
     public override void Enter()
     {
         base.Enter();
-        
+        player.jumpCount = 1;
     }
 
     public override void Exit()

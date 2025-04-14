@@ -29,11 +29,6 @@ public class KuNai_Skill : Skill
     {
         base.Update();
 
-        if (Input.GetKeyUp(KeyCode.Mouse1))
-        {
-            finnalDir = new Vector2(AimDirection().normalized.x * lanunchForce.x, AimDirection().normalized.y * lanunchForce.y);
-        }
-        
         if (Input.GetKey(KeyCode.Mouse1))
         {
             for (int i = 0; i < dotsNums; i++)
@@ -41,6 +36,12 @@ public class KuNai_Skill : Skill
                 dots[i].transform.position = DotPosition(i * spaceBetweenDots);
             }
             SetDotsActive(true);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            finnalDir = new Vector2(AimDirection().normalized.x * lanunchForce.x, AimDirection().normalized.y * lanunchForce.y);
+            
         }
     }
 

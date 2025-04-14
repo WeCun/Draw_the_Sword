@@ -14,7 +14,9 @@ public class Player : MonoBehaviour
     public float dashTime;
     public Vector2 wallJumpForce;
     public float wallJumpDuration;
-
+    public int jumpCount = 1;
+    public float cooldownFactor;
+    public float timeTransitionSpeed;
     
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     public PlayerWallJunpState wallJump { get; private set; }
     public PlayerPrimaryAttackState primaryAttack { get; private set; }
     public PlayerAimState aimState { get; private set; }
+    public PlayerDoubleJumpState doubleJump { get; private set; }
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDis;
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour
         wallJump = new PlayerWallJunpState(this, stateMachine, "WallJump");
         primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
         aimState = new PlayerAimState(this, stateMachine, "Aim");
+        doubleJump = new PlayerDoubleJumpState(this, stateMachine, "Jump");
     }
 
     void Start()
@@ -73,11 +77,6 @@ public class Player : MonoBehaviour
                 dashDir = facingDir;
             
             stateMachine.ChangeState(dashState);            
-        }
-
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            stateMachine.ChangeState(aimState);
         }
     }
     
