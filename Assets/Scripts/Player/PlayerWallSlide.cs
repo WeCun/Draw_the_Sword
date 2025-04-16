@@ -37,6 +37,8 @@ public class PlayerWallSlide : PlayerState
         else
             player.SetVelocity(0, rb.velocity.y * 0.7f);
         
+        if(!player.WallDetected())
+            stateMachine.ChangeState(player.fallState);
         if(player.GroundDetected())
             stateMachine.ChangeState(player.idleState);
     }

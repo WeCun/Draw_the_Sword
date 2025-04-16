@@ -3,26 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
-    public Rigidbody2D rb { get; private set; }
-    public Animator anim {get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
-
-    private void Awake()
+    
+    protected  override void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        base.Awake();
         stateMachine = new EnemyStateMachine();
     }
 
-    protected virtual void Start()
+    protected  override void Start()
     {
-        
+        base.Start();
     }
 
-    protected virtual void Update()
+    protected  override void Update()
     {
+        
+        base.Update();
         stateMachine.currentState.Update();
     }
+
+    
 }

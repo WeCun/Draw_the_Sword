@@ -29,7 +29,7 @@ public class KuNai_Skill : Skill
     {
         base.Update();
 
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse1) && player.stateMachine.currentState == player.aimState)
         {
             for (int i = 0; i < dotsNums; i++)
             {

@@ -1,10 +1,14 @@
 using System;
+using UnityEngine;
 
 public class EnemyState
 {
     protected Enemy enemyBase;
-    protected EnemyStateMachine stateMachine;    
+    protected EnemyStateMachine stateMachine;
+    protected Rigidbody2D rb;
     private string anim;
+
+    protected float stateTimer;
 
     public EnemyState(Enemy _enemybase, EnemyStateMachine _stateMachine, String _anim)
     {
@@ -16,6 +20,7 @@ public class EnemyState
     public virtual void Start()
     {
         enemyBase.anim.SetBool(anim, true);
+        rb = enemyBase.rb;
     }
 
     public virtual void Exit()
@@ -25,6 +30,7 @@ public class EnemyState
 
     public virtual void Update()
     {
-        
+        stateTimer -= Time.deltaTime;
     }
+    
 }

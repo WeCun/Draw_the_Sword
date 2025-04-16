@@ -2,17 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PigKingIdleState : MonoBehaviour
+public class PigKingIdleState : EnemyState
 {
-    // Start is called before the first frame update
-    void Start()
+    private PigKing enemy;
+    public PigKingIdleState(Enemy _enemybase, EnemyStateMachine _stateMachine, string _anim, PigKing _enemy) : base(_enemybase, _stateMachine, _anim)
     {
-        
+        enemy = _enemy;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Start()
     {
-        
+        base.Start();
+        Debug.Log(1);
+        rb.velocity = new Vector2(0, 0);
+        stateTimer = enemy.idleTime;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        Debug.Log(rb.velocity.x + " " + rb.velocity.y);
+        if(stateTimer < 0)
+            stateMachine.ChangeState(enemy.walkState);
     }
 }

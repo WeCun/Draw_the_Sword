@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     public float moveSpeed;
     public float initialJumpForce;
@@ -18,8 +18,6 @@ public class Player : MonoBehaviour
     public float cooldownFactor;
     public float timeTransitionSpeed;
     
-    public Animator anim { get; private set; }
-    public Rigidbody2D rb { get; private set; }
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
@@ -31,23 +29,13 @@ public class Player : MonoBehaviour
     public PlayerPrimaryAttackState primaryAttack { get; private set; }
     public PlayerAimState aimState { get; private set; }
     public PlayerDoubleJumpState doubleJump { get; private set; }
-
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckDis;
-    [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckDis;
-    
-    public int facingDir { get; private set; } = 1;
-    private bool facingRight = true;
     
     public float dashDir { get; private set; }
     
-    void Awake()
+    protected  override void Awake()
     {
+        base.Awake();
         stateMachine = new PlayerStateMachine();
-        anim = GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
         idleState = new PlayerIdleState(this, stateMachine, "Idle");
         moveState = new PlayerMoveState(this, stateMachine, "Move");
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
@@ -60,14 +48,16 @@ public class Player : MonoBehaviour
         doubleJump = new PlayerDoubleJumpState(this, stateMachine, "Jump");
     }
 
-    void Start()
+    protected  override void Start()
     {
+        base.Start();
         stateMachine.Initialize(idleState);
     }
 
     
-    void Update()
+    protected  override void Update()
     {
+        base.Update();
         stateMachine.currentState.Update();
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -82,35 +72,6 @@ public class Player : MonoBehaviour
     
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinish();
 
-    public bool GroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDis, whatIsGround);
-    public bool WallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDis, whatIsGround);
-    
-    protected virtual void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDis));
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDis * facingDir, wallCheck.position.y));
-    }
-
-    public void SetZeroVelocity()
-    {
-        rb.velocity = Vector2.zero;
-    }
-    
-    public void SetVelocity(float _xVelocity, float _yVelocity)
-    {
-        rb.velocity = new Vector2(_xVelocity, _yVelocity);
-        if(_xVelocity > 0 && !facingRight)
-            Flip();
-        if(_xVelocity < 0 && facingRight)
-            Flip();
-    }
-
-    public void Flip()
-    {
-        facingDir *= -1;
-        facingRight = !facingRight;
-        transform.Rotate(0, 180, 0);
-    }
     
     
 }
