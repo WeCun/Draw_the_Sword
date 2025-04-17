@@ -13,7 +13,6 @@ public class PigKingIdleState : EnemyState
     public override void Start()
     {
         base.Start();
-        Debug.Log(1);
         rb.velocity = new Vector2(0, 0);
         stateTimer = enemy.idleTime;
     }
@@ -26,7 +25,6 @@ public class PigKingIdleState : EnemyState
     public override void Update()
     {
         base.Update();
-        Debug.Log(rb.velocity.x + " " + rb.velocity.y);
         if(stateTimer < 0)
             stateMachine.ChangeState(enemy.walkState);
     }

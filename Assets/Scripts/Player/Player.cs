@@ -17,6 +17,8 @@ public class Player : Entity
     public int jumpCount = 1;
     public float cooldownFactor;
     public float timeTransitionSpeed;
+
+    public PlayerAttackConfig[] attackConfigs;
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -31,6 +33,10 @@ public class Player : Entity
     public PlayerDoubleJumpState doubleJump { get; private set; }
     
     public float dashDir { get; private set; }
+    public Transform attackCheck;
+    public float attackDis;
+    public Vector2 attackSize;
+    public Vector2 offset;
     
     protected  override void Awake()
     {
@@ -72,6 +78,11 @@ public class Player : Entity
     
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinish();
 
-    
-    
+    protected override void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector2 pos = new Vector2(attackCheck.position.x + offset.x, attackCheck.position.y + offset.y);
+        Gizmos.DrawWireSphere(pos, attackDis);
+        Gizmos.DrawWireCube(pos, attackSize);
+    }
 }

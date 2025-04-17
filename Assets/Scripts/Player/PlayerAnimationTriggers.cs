@@ -11,6 +11,18 @@ public class PlayerAnimationTriggers : MonoBehaviour
         player.AnimationTrigger();
     }
 
+    public void AttackTrigger()
+    {
+        Collider2D[] collider = player.attackConfigs[player.primaryAttack.comboCounter].DetectTargets(player.attackCheck.position);
+        foreach (var hit in collider)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                
+            }
+        }
+    }
+    
     public void ThrowKuNai()
     {
         SkillManager.instance.kunai.CreateKuNai();
