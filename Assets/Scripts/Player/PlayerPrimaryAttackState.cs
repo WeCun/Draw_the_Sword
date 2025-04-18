@@ -21,29 +21,28 @@ public class PlayerPrimaryAttackState : PlayerState
         
         player.anim.SetInteger("ComboCounter", comboCounter);
 
-        xInput = 0;
+        /*xInput = 0;
         xInput = Input.GetAxisRaw("Horizontal");
         float attackDir = player.facingDir;
-        if (xInput != 0) attackDir = xInput;
-        player.SetVelocity(player.attackConfigs[comboCounter].movement.x * attackDir, player.attackConfigs[comboCounter].movement.y);
-        stateTimer = player.attackConfigs[comboCounter].movementTime;
+        if (xInput != 0) attackDir = xInput;*/
+
     }
 
     public override void Exit()
     {
         base.Exit();
 
+        player.isAttacking = false;
         comboCounter++;
-        if (comboCounter > 2)
-            comboCounter = 0;
         lastAttackTime = Time.time;
     }
 
     public override void Update()
     {
         base.Update();
-        
-        if(stateTimer < 0)
+
+        player.attackController.moveTimer -= Time.deltaTime;
+        if(player.attackController.moveTimer < 0)
             player.SetZeroVelocity();
         
         if(animTrigger)

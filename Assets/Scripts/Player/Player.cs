@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : Entity
 {
@@ -17,8 +18,9 @@ public class Player : Entity
     public int jumpCount = 1;
     public float cooldownFactor;
     public float timeTransitionSpeed;
-
-    public PlayerAttackConfig[] attackConfigs;
+    public PlayerAttackController attackController;
+    public bool isAttacking = false;
+    public float attackMoveTimer { get; private set; }
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -58,6 +60,7 @@ public class Player : Entity
     {
         base.Start();
         stateMachine.Initialize(idleState);
+        attackController = new PlayerAttackController();
     }
 
     
@@ -80,9 +83,25 @@ public class Player : Entity
 
     protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        /*Gizmos.color = Color.red;
         Vector2 pos = new Vector2(attackCheck.position.x + offset.x, attackCheck.position.y + offset.y);
         Gizmos.DrawWireSphere(pos, attackDis);
-        Gizmos.DrawWireCube(pos, attackSize);
+        Gizmos.DrawWireCube(pos, attackSize);*/
+
+        if (isAttacking)
+        {
+            Gizmos.color = Color.red;
+            Vector2 position = new Vector2(attackCheck.position.x + attackController.attackConfig.offsetX, attackCheck.position.y + attackController.attackConfig.offsetY);
+            switch (attackController.attackConfig.shape)
+            {
+                case AttackShape.Circle:
+                    Gizmos.DrawWireSphere(position, attackController.attackConfig.range);
+                    break;
+                case AttackShape.Rectangle:
+                    Gizmos.DrawWireCube(position, attackController.attackConfig.size);
+                    break;
+            }
+        }
+
     }
 }

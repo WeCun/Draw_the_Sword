@@ -27,20 +27,7 @@ public class PlayerAttackConfig : ScriptableObject
     public float range;
     
     [Header("Rectangle")] public Vector2 size;
-
-    public Collider2D[] DetectTargets(Vector2 origin)
-    {
-        switch (shape)
-        {
-            case AttackShape.Circle:
-                return Physics2D.OverlapCircleAll(origin, range);
-            case AttackShape.Rectangle:
-                return Physics2D.OverlapBoxAll(origin, size, 0f);
-            default:
-                return null;
-        }
-    }
-
+    
     public void DrawGizmos(Vector2 origin)
     {
         switch(shape)
@@ -51,7 +38,6 @@ public class PlayerAttackConfig : ScriptableObject
             case AttackShape.Rectangle:
                 Gizmos.DrawWireCube(origin, size);
                 break;
-            
         }
     }
 }
