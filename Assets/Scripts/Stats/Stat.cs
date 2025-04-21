@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//标记一个类，结构体和枚举可以被序列化
+[System.Serializable]
 public class Stat
 {
     [SerializeField] private int baseValue;

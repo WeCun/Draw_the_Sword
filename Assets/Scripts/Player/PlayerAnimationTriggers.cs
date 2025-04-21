@@ -13,7 +13,16 @@ public class PlayerAnimationTriggers : MonoBehaviour
 
     public void AttackTrigger(PlayerAttackConfig attackConfig)
     {
-        player.attackController.DectectTargets(attackConfig);
+        Collider2D[] colliders = player.attackController.DectectTargets(attackConfig);
+        foreach (var hit in colliders)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                EnemyStats enemyStats = hit.GetComponent<EnemyStats>();
+                player.stats.DoDamage(enemyStats, attackConfig.damageMultiplier, attackConfig.knockbackPower);
+            }
+            
+        }
     }
 
     public void AttackStart(PlayerAttackConfig attackConfig)

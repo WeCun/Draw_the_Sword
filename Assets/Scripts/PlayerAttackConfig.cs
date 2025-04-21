@@ -14,7 +14,10 @@ public class PlayerAttackConfig : ScriptableObject
     [Header("Move")] 
     public Vector2 movement;
     public float movementTime;
-
+    
+    [Header("DamageMultiplier")]
+    public float damageMultiplier;
+    
     [Header("Offset")] 
     public float offsetX;
     public float offsetY;

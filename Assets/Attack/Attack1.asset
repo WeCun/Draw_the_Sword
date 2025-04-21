@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {x: 1, y: 1}
   movementTime: 0.1
+  damageMultiplier: 0
   offsetX: 0.1
   offsetY: -0.05
-  knockbackPower: {x: 0, y: 0}
+  knockbackPower: {x: 2, y: 10}
   shape: 1
   range: 0
   size: {x: 3.2, y: 1.8}
