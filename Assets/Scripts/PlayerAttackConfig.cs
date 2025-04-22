@@ -24,23 +24,11 @@ public class PlayerAttackConfig : ScriptableObject
     
     [Header("Knockback")] 
     public Vector2 knockbackPower;
+    public float knockbackTime;
     
     [Header("Shape and range")]
     public AttackShape shape;
     public float range;
     
     [Header("Rectangle")] public Vector2 size;
-    
-    public void DrawGizmos(Vector2 origin)
-    {
-        switch(shape)
-        {
-            case AttackShape.Circle:
-                Gizmos.DrawWireSphere(origin, range);
-                break;
-            case AttackShape.Rectangle:
-                Gizmos.DrawWireCube(origin, size);
-                break;
-        }
-    }
 }

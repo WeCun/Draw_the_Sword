@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public CharacterStats stats { get; private set; }
+    public EntityFX fx { get; private set; }
 
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDis;
@@ -25,6 +26,7 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         stats = GetComponent<CharacterStats>();
+        fx = GetComponent<EntityFX>();    
     }
 
     protected virtual void Start()
@@ -42,7 +44,7 @@ public class Entity : MonoBehaviour
         
     }
     
-    public void SetKnockbackDir(Transform _damageDir)
+    public virtual void SetKnockbackDir(Transform _damageDir)
     {
         if (_damageDir.position.x < transform.position.x)
             knockbackDir = 1;
@@ -52,12 +54,9 @@ public class Entity : MonoBehaviour
 
     public virtual IEnumerator HitKnockback(Vector2 knockbackPower, float knockbackDuration)
     {
-        isKnocked = true;
-        Debug.Log("1" + knockbackDir);
         rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
         yield return new WaitForSeconds(knockbackDuration);
         rb.velocity = Vector2.zero;
-        isKnocked = false;
     }
     
     #region Collision
@@ -75,21 +74,21 @@ public class Entity : MonoBehaviour
     #region Velocity & Flip
     public void SetZeroVelocity()
     {
-        if (isKnocked)
-            return;
         rb.velocity = Vector2.zero;
     }
     
     public void SetVelocity(float _x, float _y)
     {
-        if (isKnocked)
-            return;
-        
         rb.velocity = new Vector2(_x, _y);
-        if(_x > 0 && !facingRight)
+        if (_x > 0 && !facingRight)
+        {
             Flip();
-        if(_x < 0 && facingRight)
+        }
+
+        if (_x < 0 && facingRight)
+        {
             Flip();
+        }
     }
 
     public void Flip()

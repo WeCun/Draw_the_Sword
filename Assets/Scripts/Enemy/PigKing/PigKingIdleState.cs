@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PigKingIdleState : EnemyState
+public class PigKingIdleState : PigKingGroundState
 {
-    private PigKing enemy;
-    public PigKingIdleState(Enemy _enemybase, EnemyStateMachine _stateMachine, string _anim, PigKing _enemy) : base(_enemybase, _stateMachine, _anim)
+    public PigKingIdleState(Enemy _enemybase, EnemyStateMachine _stateMachine, string _anim, PigKing _enemy) : base(_enemybase, _stateMachine, _anim, _enemy)
     {
-        enemy = _enemy;
     }
 
     public override void Start()

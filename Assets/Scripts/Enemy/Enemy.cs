@@ -25,5 +25,14 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
+    public virtual void ChangeHitState(float _hitDuration)
+    {
+        
+    }
     
+    public override IEnumerator HitKnockback(Vector2 knockbackPower, float knockbackDuration)
+    {
+        ChangeHitState(knockbackDuration);
+        return base.HitKnockback(knockbackPower, knockbackDuration);
+    }
 }

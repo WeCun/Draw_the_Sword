@@ -25,7 +25,7 @@ public class CharacterStats : MonoBehaviour
     public int currentHealth;
     public bool isInvincible;
 
-    public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 knockbackPower)
+    public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 _knockbackPower, float _knockTime)
     {
         if (TargetIsAvoid(_target) || _target.isInvincible)
             return;
@@ -39,7 +39,7 @@ public class CharacterStats : MonoBehaviour
         }
         
         _target.GetComponent<Entity>().SetKnockbackDir(transform);
-        StartCoroutine(_target.GetComponent<Entity>().HitKnockback(knockbackPower, 1f));    
+        StartCoroutine(_target.GetComponent<Entity>().HitKnockback(_knockbackPower, _knockTime));    
         
         float _targetArmor = _target.armor.GetValue();
         totalDamage = Mathf.RoundToInt(totalDamage * (_targetArmor / (armorConstant + _targetArmor)));

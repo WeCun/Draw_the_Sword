@@ -17,7 +17,7 @@ MonoBehaviour:
   damageMultiplier: 0
   offsetX: 0.1
   offsetY: -0.05
-  knockbackPower: {x: 2, y: 10}
+  knockbackPower: {x: 5, y: 50}
   shape: 1
   range: 0
   size: {x: 3.2, y: 1.8}

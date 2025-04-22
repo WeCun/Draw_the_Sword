@@ -83,10 +83,7 @@ public class Player : Entity
 
     protected override void OnDrawGizmos()
     {
-        /*Gizmos.color = Color.red;
-        Vector2 pos = new Vector2(attackCheck.position.x + offset.x, attackCheck.position.y + offset.y);
-        Gizmos.DrawWireSphere(pos, attackDis);
-        Gizmos.DrawWireCube(pos, attackSize);*/
+        base.OnDrawGizmos();
 
         if (isAttacking)
         {

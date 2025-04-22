@@ -19,7 +19,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
             if (hit.GetComponent<Enemy>() != null)
             {
                 EnemyStats enemyStats = hit.GetComponent<EnemyStats>();
-                player.stats.DoDamage(enemyStats, attackConfig.damageMultiplier, attackConfig.knockbackPower);
+                player.stats.DoDamage(enemyStats, attackConfig.damageMultiplier, attackConfig.knockbackPower, attackConfig.knockbackTime);
             }
             
         }
