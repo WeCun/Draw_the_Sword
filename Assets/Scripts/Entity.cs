@@ -54,6 +54,7 @@ public class Entity : MonoBehaviour
 
     public virtual IEnumerator HitKnockback(Vector2 knockbackPower, float knockbackDuration)
     {
+        if(knockbackDir == facingDir) Flip();
         rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
         yield return new WaitForSeconds(knockbackDuration);
         rb.velocity = Vector2.zero;

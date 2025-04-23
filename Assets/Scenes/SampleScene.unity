@@ -343,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 238388951}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.885, y: 0.01, z: 0}
+  m_LocalPosition: {x: 0.16, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 408510611}
   - component: {fileID: 408510614}
   - component: {fileID: 408510615}
+  - component: {fileID: 408510616}
   m_Layer: 8
   m_Name: PigKing
   m_TagString: Untagged
@@ -467,8 +468,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   wallCheck: {fileID: 238388952}
-  wallCheckDis: 0.3
-  facingDir: 1
+  wallCheckDis: 1.35
+  facingDir: -1
   knockbackDir: 1
   isKnocked: 0
   idleTime: 1
@@ -477,10 +478,11 @@ MonoBehaviour:
   battleTime: 5
   runSpeed: 3
   turnTime: 0.5
+  hitDuration: 0
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 128
-  playerCheckDis: 8
+  playerCheckDis: 10
 --- !u!114 &408510615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,6 +528,18 @@ MonoBehaviour:
   armorConstant: 0
   currentHealth: 0
   isInvincible: 0
+--- !u!114 &408510616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408510610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d40f95538be2c745bfcc521d82b780b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,6 +803,7 @@ GameObject:
   - component: {fileID: 830991233}
   - component: {fileID: 830991234}
   - component: {fileID: 830991235}
+  - component: {fileID: 830991236}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -962,6 +977,18 @@ MonoBehaviour:
   armorConstant: 0
   currentHealth: 0
   isInvincible: 0
+--- !u!114 &830991236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830991229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d40f95538be2c745bfcc521d82b780b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &960516161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,7 +1301,7 @@ Transform:
   m_GameObject: {fileID: 1330833772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.074, y: -1.37, z: 0}
+  m_LocalPosition: {x: -0.074, y: -1.426, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
