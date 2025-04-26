@@ -12,6 +12,7 @@ public class ItemObject : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = itemData.icon;
+        gameObject.name = "Item Object - " + itemData.name;
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

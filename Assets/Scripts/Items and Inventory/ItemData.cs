@@ -5,7 +5,7 @@ using UnityEngine;
 public enum ItemType
 {
     Material,
-    Weapon
+    Equipment
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "Data/Item")]
