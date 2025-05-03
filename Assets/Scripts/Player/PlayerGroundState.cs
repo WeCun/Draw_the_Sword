@@ -27,8 +27,8 @@ public class PlayerGroundState : PlayerExtra
             stateMachine.ChangeState(player.jumpState);
         }
         
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-            stateMachine.ChangeState(player.primaryAttack);
+         if(Input.GetKeyDown(KeyCode.Mouse0))
+             stateMachine.ChangeState(player.primaryAttack);
             
         
         if(!player.GroundDetected())

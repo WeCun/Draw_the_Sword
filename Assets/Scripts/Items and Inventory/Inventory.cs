@@ -18,9 +18,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform stashSlotParent;
     [SerializeField] private Transform equipmentSlotParent;
     
-    private UI_ItemSlot[] inventorySlots;
-    private UI_ItemSlot[] stashSlots;
-    private UI_ItemSlot[] equipmentSlots;
+    public UI_ItemSlot[] inventorySlots;
+    public UI_ItemSlot[] stashSlots;
     void Awake()
     {
         if (instance != null)
@@ -35,24 +34,21 @@ public class Inventory : MonoBehaviour
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
         stash = new List<InventoryItem>();
         stashDictionary = new Dictionary<ItemData, InventoryItem>();
-        equipment = new List<InventoryItem>();
-        equipmentDictionary = new Dictionary<ItemData_Equipment, InventoryItem>();
 
         inventorySlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashSlots = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
-        equipmentSlots = equipmentSlotParent.GetComponentsInChildren<UI_ItemSlot>();
     }
 
-    void UpdateSlot()
+    public void UpdateSlot()
     {
-        for (int i = 0; i < inventory.Count; i++)
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            inventorySlots[i].UpdateSlot(inventory[i]);
+            inventorySlots[i].UpdateSlot();
         }
         
-        for (int i = 0; i < stash.Count; i++)
+        for (int i = 0; i < stashSlots.Length; i++)
         {
-            stashSlots[i].UpdateSlot(stash[i]);
+            stashSlots[i].UpdateSlot();
         }
     }
 
@@ -71,19 +67,28 @@ public class Inventory : MonoBehaviour
             }
         }
 
+        equipment.Add(newItem);
+        equipmentDictionary.Add(newEquipment, newItem);
+        RemoveItem(newEquipment);
+        
         if (oldItem != null)
+        {
+            UnlodeEquipment(oldItem);
+        }
+        
+        UpdateSlot();
+    }
+
+    private void UnlodeEquipment(ItemData_Equipment oldItem)
+    {
+        if (inventory.Count < inventorySlots.Length)
         {
             equipment.Remove(equipmentDictionary[oldItem]);
             equipmentDictionary.Remove(oldItem);
             AddItem(oldItem);
         }
-        
-        equipment.Add(newItem);
-        equipmentDictionary.Add(newEquipment, newItem);
-        RemoveItem(newEquipment);
-        UpdateSlot();
     }
-    
+
     public void AddItem(ItemData _item)
     {
         //直接通过 dict[key] 访问不存在的键会抛出 KeyNotFoundException
@@ -110,6 +115,14 @@ public class Inventory : MonoBehaviour
         else
         {
             InventoryItem newItem = new InventoryItem(_item);
+            for (int i = 0; i < stashSlots.Length; i++)
+            {
+                if (stashSlots[i].item == null)
+                {
+                    stashSlots[i].item = newItem;
+                    break;
+                }
+            }
             stash.Add(newItem);
             stashDictionary.Add(_item, newItem);
         }
@@ -124,19 +137,36 @@ public class Inventory : MonoBehaviour
         else
         {
             InventoryItem newItem = new InventoryItem(_item);
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i].item == null)
+                {
+                    inventorySlots[i].item = newItem;
+                    break;
+                }
+            }
             inventory.Add(newItem);
             inventoryDictionary.Add(_item, newItem);
         }
 
         
     }
-
+    
+    //移除物品
     public void RemoveItem(ItemData _item)
     {
         if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
         {
             if (value.stackSize <= 1)
             {
+                for (int i = 0; i < inventorySlots.Length; i++)
+                {
+                    if (inventorySlots[i].item == value)
+                    {
+                        inventorySlots[i].item = null;
+                        break;
+                    }
+                }
                 inventory.Remove(value);
                 inventoryDictionary.Remove(_item);
             }
@@ -150,7 +180,15 @@ public class Inventory : MonoBehaviour
         {
             if (stashValue.stackSize <= 1)
             {
-                stash.Remove(value);
+                for (int i = 0; i < stashSlots.Length; i++)
+                {
+                    if (stashSlots[i].item == stashValue)
+                    {
+                        stashSlots[i].item = null;  
+                        break;
+                    }
+                }
+                stash.Remove(stashValue);
                 stashDictionary.Remove(_item);
             }
             else

@@ -1,37 +1,62 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems; 
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
+public class UI_ItemSlot : MonoBehaviour
 {
-    [SerializeField] protected Image image;
-    [SerializeField] protected TextMeshProUGUI text;
+    public Image image;
+    public TextMeshProUGUI text;
+    public GameObject itemInSlot;
 
     public InventoryItem item;
     
-    public void UpdateSlot(InventoryItem _item)
+    void Start()
     {
-        item = _item;
-        image.color = Color.white;
+        //todo: 把item置为null，目前我的推论：由于InventoryItem类被[Serializable]了，Unity 可能会在反序列化时自动创建一个空实例（即使 Inspector 中未赋值），导致item不为null,所以这里还需要置为null
+        //todo:但你看其他类型比如上面的image，就算他是public，但输出出来的还是null，定义了[Serializable]的类就不会
+        Debug.Log("Start: " + item);
+        item = null;
+    }
+    
+    public void UpdateSlot()
+    {
         if (item != null)
         {
+            itemInSlot.SetActive(true);
             image.sprite = item.data.icon;
-            if (_item.stackSize <= 1)
+            if (item.stackSize <= 1)
                 text.text = "";
             else
             {
-                text.text = _item.stackSize.ToString();
+                text.text = item.stackSize.ToString();
             }
+        }
+        else
+        {
+            ClearSlot();
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void SwapBasicItem(UI_ItemSlot otherSlot)
     {
-        if (item != null && item.data.itemType == ItemType.Equipment)
-        {
-            Debug.Log("Clicked on " + item.data.itemName);
-            Inventory.instance.EquipItem(item.data);
-        }
+        Debug.Log("123");
+        (image, otherSlot.image) = (otherSlot.image, image);
+        (text, otherSlot.text) = (otherSlot.text, text);
+        (itemInSlot, otherSlot.itemInSlot) = (otherSlot.itemInSlot, itemInSlot);
+    }
+
+    public void SwapItem(UI_ItemSlot otherSlot)
+    {
+        InventoryItem temp = item;
+        item = otherSlot.item;
+        otherSlot.item = temp;
+    }
+
+    public void ClearSlot()
+    {
+        image.sprite = null;
+        text.text = "";
+        itemInSlot.SetActive(false);
     }
 }
