@@ -2,9 +2,10 @@ using UnityEngine;
 
 public enum EquipmentType
 {
-    Weapon,
-    Armor,
-    Amulet
+    Weapon,  //武器
+    Armor,   //盔甲
+    Amulet,  //护身符
+    Potion   //药水
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "Data/Equipment")]

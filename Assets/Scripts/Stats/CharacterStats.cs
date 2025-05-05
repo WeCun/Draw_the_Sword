@@ -27,10 +27,12 @@ public class CharacterStats : MonoBehaviour
 
     public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 _knockbackPower, float _knockTime)
     {
+        //判断此攻击会否会被闪避以及是否处于无敌状态
         if (TargetIsAvoid(_target) || _target.isInvincible)
             return;
         
         int totalDamage = Mathf.RoundToInt((strength.GetValue() + damage.GetValue()) * _damageMultiplier);
+        //是否暴击
         if (IsCrit())
         {
            float totalCritPower = 0.1f * (strength.GetValue() + cirtPower.GetValue());
@@ -38,12 +40,15 @@ public class CharacterStats : MonoBehaviour
            totalDamage = Mathf.RoundToInt(critDamage);
         }
         
+        //受击FX
         _target.GetComponent<Entity>().SetKnockbackDir(transform);
         StartCoroutine(_target.GetComponent<Entity>().HitKnockback(_knockbackPower, _knockTime));    
         
+        //使用类似于英雄联盟的护甲穿透    实际伤害 = 伤害 * (护甲 / (护甲 + 护甲常量))
         float _targetArmor = _target.armor.GetValue();
         totalDamage = Mathf.RoundToInt(totalDamage * (_targetArmor / (armorConstant + _targetArmor)));
         
+        //造成伤害
         _target.TakeDamage(totalDamage);
     }
 

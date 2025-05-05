@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -29,6 +30,18 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        bool isEquipmentSlot = false,  isItemSlot = false;
+        List<RaycastResult> results = new List<RaycastResult>();
+        //获取当前鼠标所在位置的所有UI元素
+        EventSystem.current.RaycastAll(eventData, results);
+        
+        //判断是否在物品上
+        foreach (var result in results)
+        {
+            
+                
+        }
+        
         //假如这个位置有物品就进行两者之间的交换
         if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "ItemIcon")
         {
@@ -36,24 +49,12 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UI_ItemSlot>());
             transform.SetParent(orinalParent);
             transform.position = orinalParent.position;
-            
-            // itemSlot.SwapBasicItem(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UI_ItemSlot>());
-            // transform.SetParent(eventData.pointerCurrentRaycast.gameObject.transform.parent.parent);
-            // transform.position = eventData.pointerCurrentRaycast.gameObject.transform.parent.position;
-            // eventData.pointerCurrentRaycast.gameObject.transform.parent.SetParent(orinalParent);
-            // eventData.pointerCurrentRaycast.gameObject.transform.parent.position = orinalParent.position; 
         }//再判断是否在格子上
         else if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>() != null)
         {
             itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>());
             transform.SetParent(orinalParent);
             transform.position = orinalParent.position;
-            
-            // transform.SetParent(eventData.pointerCurrentRaycast.gameObject.transform);
-            // transform.position = eventData.pointerCurrentRaycast.gameObject.transform.position;
-            // Debug.Log(eventData.pointerCurrentRaycast.gameObject.GetComponentInChildren<UI_SlotDrag>().gameObject.name);
-            // eventData.pointerCurrentRaycast.gameObject.GetComponentInChildren<UI_SlotDrag>().gameObject.transform.SetParent(orinalParent);
-            //eventData.pointerCurrentRaycast.gameObject.GetComponentInChildren<UI_SlotDrag>().gameObject.transform.position = orinalParent.position;
         }
         else
         {

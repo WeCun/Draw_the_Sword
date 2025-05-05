@@ -7,20 +7,30 @@ using UnityEngine.Serialization;
 public class Player : Entity
 {
     public float moveSpeed;
+    
+    [Header("Jump")]
     public float initialJumpForce;
     public float jumpForce;
+    
+    [Header("DoubleJump")]
     public float doubleJumpForce;
     public float maxJumpTime;
+    public int jumpCount = 1;
+    
+    [Header("Dash")]
     public float dashSpeed;
     public float dashTime;
+    
+    [Header("Wall Jump")]
     public Vector2 wallJumpForce;
     public float wallJumpDuration;
-    public int jumpCount = 1;
+    
+    [Header("TimeCooldown")]
     public float cooldownFactor;
     public float timeTransitionSpeed;
+    
     public PlayerAttackController attackController;
     public bool isAttacking = false;
-    public float attackMoveTimer { get; private set; }
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }

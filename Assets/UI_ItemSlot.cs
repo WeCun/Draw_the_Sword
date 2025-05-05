@@ -19,7 +19,7 @@ public class UI_ItemSlot : MonoBehaviour
         item = null;
     }
     
-    public void UpdateSlot()
+    public virtual void UpdateSlot()
     {
         if (item != null)
         {
@@ -48,6 +48,7 @@ public class UI_ItemSlot : MonoBehaviour
 
     public void SwapItem(UI_ItemSlot otherSlot)
     {
+        //不能直接用析构的写法，otherSlot可能为空
         InventoryItem temp = item;
         item = otherSlot.item;
         otherSlot.item = temp;

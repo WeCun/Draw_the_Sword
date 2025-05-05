@@ -20,6 +20,7 @@ public class Inventory : MonoBehaviour
     
     public UI_ItemSlot[] inventorySlots;
     public UI_ItemSlot[] stashSlots;
+    public UI_EquipmentSlot[] equipmentSlots;
     void Awake()
     {
         if (instance != null)
@@ -34,13 +35,21 @@ public class Inventory : MonoBehaviour
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
         stash = new List<InventoryItem>();
         stashDictionary = new Dictionary<ItemData, InventoryItem>();
+        equipment = new List<InventoryItem>();
+        equipmentDictionary = new Dictionary<ItemData_Equipment, InventoryItem>();
 
         inventorySlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashSlots = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
+        equipmentSlots = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
     }
 
     public void UpdateSlot()
     {
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+           equipmentSlots[i].UpdateSlot(); 
+        }
+        
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             inventorySlots[i].UpdateSlot();
