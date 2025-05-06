@@ -1,14 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+public enum StatType
+{
+    maxHealth,
+    damage,
+    critChance,
+    cirtPower,
+    armor,
+    evasion,
+    strength,
+    agility,
+    vitality
+}
 
 public class CharacterStats : MonoBehaviour
 {
     [Header("Major stats")]
     public Stat strength;//增加1点伤害和暴击伤害
     public Stat agility;//增加1点暴击率和闪避率
-    public Stat Vitality;//增加3点最大生命值
+    public Stat vitality;//增加3点最大生命值
 
     [Header("Offensive stats")] 
     public Stat damage;
@@ -87,5 +96,19 @@ public class CharacterStats : MonoBehaviour
         }
 
         return false;
+    }
+
+    public int GetStatValue(StatType statType)
+    {
+        if(statType == StatType.maxHealth) return maxHealth.GetValue();
+        if(statType == StatType.damage) return damage.GetValue();
+        if(statType == StatType.critChance) return critChance.GetValue();
+        if(statType == StatType.cirtPower) return cirtPower.GetValue();
+        if(statType == StatType.armor) return armor.GetValue();
+        if(statType == StatType.evasion) return evasion.GetValue();
+        if(statType == StatType.strength) return strength.GetValue();
+        if(statType == StatType.agility) return agility.GetValue();
+        if(statType == StatType.vitality) return vitality.GetValue();
+        return 0;
     }
 }

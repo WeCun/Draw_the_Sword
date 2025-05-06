@@ -6,11 +6,16 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 {
     private Transform orinalParent;
     private UI_ItemSlot itemSlot;
+    private ItemType itemType;
+    private EquipmentType equipmentType;
     
     //开始拖拽的时候
     public void OnBeginDrag(PointerEventData eventData)
     {
         itemSlot = GetComponentInParent<UI_ItemSlot>();
+        Debug.Log(itemSlot.item);
+        itemType = itemSlot.item.data.itemType;
+        if(itemType == ItemType.Equipment) equipmentType = (itemSlot.item.data as ItemData_Equipment).equipmentType;
         orinalParent = transform.parent;
         //拖拽开始时，该 ItemSlot 的 RectTransform 位置被修改（脱离原布局位置），
         //布局组件会立即重新计算剩余子项的排列顺序，导致其他 ItemSlot 突然移动，而拖拽对象的位置可能被错误地重置到原容器末尾的「下一个位置」。
@@ -30,7 +35,10 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        //判断这个位置的物品是否在slot内
         bool isEquipmentSlot = false,  isItemSlot = false;
+        EquipmentType targetEquipmentType = EquipmentType.Amulet;
+        UI_ItemSlot target = null;
         List<RaycastResult> results = new List<RaycastResult>();
         //获取当前鼠标所在位置的所有UI元素
         EventSystem.current.RaycastAll(eventData, results);
@@ -38,29 +46,74 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         //判断是否在物品上
         foreach (var result in results)
         {
-            
-                
+            Debug.Log(result.gameObject.name);
+            if (result.gameObject.GetComponent<UI_EquipmentSlot>() != null)
+            {
+               isEquipmentSlot = true;
+               targetEquipmentType = result.gameObject.GetComponent<UI_EquipmentSlot>().equipmentType;
+               target = result.gameObject.GetComponent<UI_EquipmentSlot>();
+            }
+            if (result.gameObject.GetComponent<UI_ItemSlot>() != null)
+            {
+              isItemSlot = true;  
+              target = result.gameObject.GetComponent<UI_ItemSlot>();
+            }
         }
         
-        //假如这个位置有物品就进行两者之间的交换
-        if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "ItemIcon")
+        //判断是否在slot上
+        if (isItemSlot)
         {
-            //进行优化，交换的只是两个slot之间的物品，而不是互相切换父母
-            itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UI_ItemSlot>());
-            transform.SetParent(orinalParent);
-            transform.position = orinalParent.position;
-        }//再判断是否在格子上
-        else if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>() != null)
-        {
-            itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>());
-            transform.SetParent(orinalParent);
-            transform.position = orinalParent.position;
+            //判断这个slot是否是装备栏
+            if (isEquipmentSlot)
+            {
+                if (itemType == ItemType.Equipment && equipmentType == targetEquipmentType)
+                {
+                    itemSlot.SwapItem(target);
+                    transform.SetParent(orinalParent);
+                    transform.position = orinalParent.position;
+                }
+                //与装备栏的装备类型不匹配
+                else
+                {
+                    transform.SetParent(orinalParent);
+                    transform.position = orinalParent.position;
+                }
+            }
+            //不是装备栏就是普通slot
+            else
+            {
+                itemSlot.SwapItem(target);
+                transform.SetParent(orinalParent);
+                transform.position = orinalParent.position;
+            }
         }
+        //不在slot内
         else
         {
             transform.SetParent(orinalParent);
+            Debug.Log(orinalParent);
             transform.position = orinalParent.position;
         }
+        
+        // //假如这个位置有物品就进行两者之间的交换
+        // if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "ItemIcon")
+        // {
+        //     //进行优化，交换的只是两个slot之间的物品，而不是互相切换父母
+        //     itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UI_ItemSlot>());
+        //     transform.SetParent(orinalParent);
+        //     transform.position = orinalParent.position;
+        // }//再判断是否在格子上
+        // else if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>() != null)
+        // {
+        //     itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>());
+        //     transform.SetParent(orinalParent);
+        //     transform.position = orinalParent.position;
+        // }
+        // else
+        // {
+        //     transform.SetParent(orinalParent);
+        //     transform.position = orinalParent.position;
+        // }
         
         Inventory.instance.UpdateSlot();
         GetComponent<CanvasGroup>().blocksRaycasts = true;

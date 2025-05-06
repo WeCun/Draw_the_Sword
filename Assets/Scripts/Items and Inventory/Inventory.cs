@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,6 +60,11 @@ public class Inventory : MonoBehaviour
         {
             stashSlots[i].UpdateSlot();
         }
+    }
+
+    private void Update()
+    {
+        Debug.Log(stashSlots[0].item.data);
     }
 
     public void EquipItem(ItemData _item)
@@ -126,7 +132,7 @@ public class Inventory : MonoBehaviour
             InventoryItem newItem = new InventoryItem(_item);
             for (int i = 0; i < stashSlots.Length; i++)
             {
-                if (stashSlots[i].item == null)
+                if (stashSlots[i].item.data == null)
                 {
                     stashSlots[i].item = newItem;
                     break;
@@ -139,21 +145,23 @@ public class Inventory : MonoBehaviour
 
     private void AddEquipment(ItemData _item)
     {
+        //装备不叠加
+        InventoryItem newItem = new InventoryItem(_item);
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].item.data == null)
+            {
+                inventorySlots[i].item = newItem;
+                break;
+            }
+        }
+        
         if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
         {
             value.AddStack();
         }
         else
         {
-            InventoryItem newItem = new InventoryItem(_item);
-            for (int i = 0; i < inventorySlots.Length; i++)
-            {
-                if (inventorySlots[i].item == null)
-                {
-                    inventorySlots[i].item = newItem;
-                    break;
-                }
-            }
             inventory.Add(newItem);
             inventoryDictionary.Add(_item, newItem);
         }
