@@ -50,7 +50,6 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (result.gameObject.GetComponent<UI_EquipmentSlot>() != null)
             {
                isEquipmentSlot = true;
-               targetEquipmentType = result.gameObject.GetComponent<UI_EquipmentSlot>().equipmentType;
                target = result.gameObject.GetComponent<UI_EquipmentSlot>();
             }
             if (result.gameObject.GetComponent<UI_ItemSlot>() != null)
@@ -66,8 +65,11 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             //判断这个slot是否是装备栏
             if (isEquipmentSlot)
             {
-                if (itemType == ItemType.Equipment && equipmentType == targetEquipmentType)
+                if (itemType == ItemType.Equipment && equipmentType == (target as UI_EquipmentSlot).equipmentType)
                 {
+                    //先进行属性添加删除再进行物品item交换
+                    if(target.item.data != null) (target.item.data as ItemData_Equipment).RemoveModifies();
+                    (itemSlot.item.data as ItemData_Equipment).AddModifies();
                     itemSlot.SwapItem(target);
                     transform.SetParent(orinalParent);
                     transform.position = orinalParent.position;
@@ -82,38 +84,54 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             //不是装备栏就是普通slot
             else
             {
-                itemSlot.SwapItem(target);
-                transform.SetParent(orinalParent);
-                transform.position = orinalParent.position;
+                //判断这个slot起始是不是为装备槽
+                if (itemSlot is UI_EquipmentSlot)//父类变量实际引用的子类对象: is
+                {
+                    if (target.item.data == null)
+                    {
+                        (itemSlot.item.data as ItemData_Equipment).RemoveModifies();
+                        itemSlot.SwapItem(target);
+                        transform.SetParent(orinalParent);
+                        transform.position = orinalParent.position;
+                    }
+                    else if (target.item.data.itemType == ItemType.Equipment)
+                    {
+                        //判断要交换的两个装备是否是同一个类型
+                        if ((target.item.data as ItemData_Equipment).equipmentType ==
+                            (itemSlot.item.data as ItemData_Equipment).equipmentType)
+                        {
+                            (target.item.data as ItemData_Equipment).AddModifies();
+                            (itemSlot.item.data as ItemData_Equipment).RemoveModifies();
+                            itemSlot.SwapItem(target);
+                            transform.SetParent(orinalParent);
+                            transform.position = orinalParent.position;
+                        }
+                        else  //不是同一个类型就返回
+                        {
+                            transform.SetParent(orinalParent);
+                            transform.position = orinalParent.position;
+                        }
+                    }
+                    else  //起始是装备但终止是材料的话就不需要就换
+                    {
+                        transform.SetParent(orinalParent);
+                        transform.position = orinalParent.position;
+                    }
+                }
+                else
+                {
+                    itemSlot.SwapItem(target);
+                    transform.SetParent(orinalParent);
+                    transform.position = orinalParent.position;
+                }
             }
         }
         //不在slot内
         else
         {
             transform.SetParent(orinalParent);
-            Debug.Log(orinalParent);
             transform.position = orinalParent.position;
         }
-        
-        // //假如这个位置有物品就进行两者之间的交换
-        // if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "ItemIcon")
-        // {
-        //     //进行优化，交换的只是两个slot之间的物品，而不是互相切换父母
-        //     itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UI_ItemSlot>());
-        //     transform.SetParent(orinalParent);
-        //     transform.position = orinalParent.position;
-        // }//再判断是否在格子上
-        // else if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>() != null)
-        // {
-        //     itemSlot.SwapItem(eventData.pointerCurrentRaycast.gameObject.GetComponent<UI_ItemSlot>());
-        //     transform.SetParent(orinalParent);
-        //     transform.position = orinalParent.position;
-        // }
-        // else
-        // {
-        //     transform.SetParent(orinalParent);
-        //     transform.position = orinalParent.position;
-        // }
         
         Inventory.instance.UpdateSlot();
         GetComponent<CanvasGroup>().blocksRaycasts = true;

@@ -18,10 +18,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform inventorySlotParent;
     [SerializeField] private Transform stashSlotParent;
     [SerializeField] private Transform equipmentSlotParent;
+    [SerializeField] private Transform statSlotParent;
     
     public UI_ItemSlot[] inventorySlots;
     public UI_ItemSlot[] stashSlots;
     public UI_EquipmentSlot[] equipmentSlots;
+    public UI_StatSlot[] statSlots;
     void Awake()
     {
         if (instance != null)
@@ -42,6 +44,7 @@ public class Inventory : MonoBehaviour
         inventorySlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashSlots = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlots = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+        statSlots = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
     }
 
     public void UpdateSlot()
@@ -60,47 +63,16 @@ public class Inventory : MonoBehaviour
         {
             stashSlots[i].UpdateSlot();
         }
+
+        UpdateStatUI();
     }
+    
 
-    private void Update()
+    public void UpdateStatUI()
     {
-        Debug.Log(stashSlots[0].item.data);
-    }
-
-    public void EquipItem(ItemData _item)
-    {
-        ItemData_Equipment newEquipment = _item as ItemData_Equipment;
-        InventoryItem newItem = new InventoryItem(newEquipment);
-
-        ItemData_Equipment oldItem = null;
-
-        foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
+        for (int i = 0; i < statSlots.Length; i++)
         {
-            if (item.Key.equipmentType == newEquipment.equipmentType)
-            {
-               oldItem = item.Key; 
-            }
-        }
-
-        equipment.Add(newItem);
-        equipmentDictionary.Add(newEquipment, newItem);
-        RemoveItem(newEquipment);
-        
-        if (oldItem != null)
-        {
-            UnlodeEquipment(oldItem);
-        }
-        
-        UpdateSlot();
-    }
-
-    private void UnlodeEquipment(ItemData_Equipment oldItem)
-    {
-        if (inventory.Count < inventorySlots.Length)
-        {
-            equipment.Remove(equipmentDictionary[oldItem]);
-            equipmentDictionary.Remove(oldItem);
-            AddItem(oldItem);
+            statSlots[i].UpdateStat();
         }
     }
 

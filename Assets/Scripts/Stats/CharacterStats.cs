@@ -100,6 +100,8 @@ public class CharacterStats : MonoBehaviour
 
     public int GetStatValue(StatType statType)
     {
+        Debug.Log("123");
+        Debug.Log(maxHealth.GetValue());
         if(statType == StatType.maxHealth) return maxHealth.GetValue();
         if(statType == StatType.damage) return damage.GetValue();
         if(statType == StatType.critChance) return critChance.GetValue();
@@ -109,6 +111,7 @@ public class CharacterStats : MonoBehaviour
         if(statType == StatType.strength) return strength.GetValue();
         if(statType == StatType.agility) return agility.GetValue();
         if(statType == StatType.vitality) return vitality.GetValue();
+        Debug.Log("123");
         return 0;
     }
 }

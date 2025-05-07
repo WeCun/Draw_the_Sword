@@ -41,14 +41,7 @@ public class UI_ItemSlot : MonoBehaviour
             ClearSlot();
         }
     }
-
-    public void SwapBasicItem(UI_ItemSlot otherSlot)
-    {
-        Debug.Log("123");
-        (image, otherSlot.image) = (otherSlot.image, image);
-        (text, otherSlot.text) = (otherSlot.text, text);
-        (itemInSlot, otherSlot.itemInSlot) = (otherSlot.itemInSlot, itemInSlot);
-    }
+    
 
     public void SwapItem(UI_ItemSlot otherSlot)
     {

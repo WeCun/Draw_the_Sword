@@ -5749,25 +5749,25 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   critChance:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   cirtPower:
-    baseValue: 0
+    baseValue: 150
     modifiers: 
   armorpenetration:
     baseValue: 0
     modifiers: 
   armor:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   evasion:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
   maxHealth:
-    baseValue: 0
+    baseValue: 100
     modifiers: 
   armorConstant: 0
   currentHealth: 0

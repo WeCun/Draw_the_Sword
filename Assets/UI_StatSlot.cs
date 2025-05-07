@@ -22,9 +22,9 @@ public class UI_StatSlot : MonoBehaviour
         statNameText.text = statName;
     }
 
-    void UpdateStat()
+    public void UpdateStat()
     {
         //将属性中的值显示出来
-        statNameText.text = PlayerManager.instance.player.GetComponent<PlayerStats>().GetStatValue(statType).ToString();
+        statValueText.text = PlayerManager.instance.player.GetComponent<PlayerStats>().GetStatValue(statType).ToString();
     }
 }
