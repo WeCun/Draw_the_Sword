@@ -37,7 +37,6 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         //判断这个位置的物品是否在slot内
         bool isEquipmentSlot = false,  isItemSlot = false;
-        EquipmentType targetEquipmentType = EquipmentType.Amulet;
         UI_ItemSlot target = null;
         List<RaycastResult> results = new List<RaycastResult>();
         //获取当前鼠标所在位置的所有UI元素

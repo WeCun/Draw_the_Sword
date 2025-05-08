@@ -1,9 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_ItemSlot : MonoBehaviour
+public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image image;
     public TextMeshProUGUI text;
@@ -56,5 +57,17 @@ public class UI_ItemSlot : MonoBehaviour
         image.sprite = null;
         text.text = "";
         itemInSlot.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(item.data != null)
+            GetComponentInParent<UI>().itemTip.UpdataTip(item.data, transform);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(item.data != null)
+            GetComponentInParent<UI>().itemTip.CloseTip();
     }
 }

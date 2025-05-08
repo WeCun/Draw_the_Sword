@@ -8,6 +8,8 @@ public class UI : MonoBehaviour
     public GameObject characterInformation;
     public GameObject[] inventory;
     
+    public UI_ItemTip itemTip;
+    
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
