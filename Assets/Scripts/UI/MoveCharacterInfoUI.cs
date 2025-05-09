@@ -9,7 +9,6 @@ public class MoveCharacterInfoUI : MonoBehaviour, IDragHandler
     
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("11123");
         rectTransform.anchoredPosition += eventData.delta;
     }
 }

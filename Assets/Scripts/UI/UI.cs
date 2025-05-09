@@ -9,6 +9,7 @@ public class UI : MonoBehaviour
     public GameObject[] inventory;
     
     public UI_ItemTip itemTip;
+    public UI_EquipmentTip equipmentTip;
     
     public void Update()
     {

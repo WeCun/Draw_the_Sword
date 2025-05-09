@@ -34,11 +34,13 @@ public class PlayerAirState : PlayerExtra
         }
         else
         {
-            player.SetVelocity(rb.velocity.x * 0.9f, rb.velocity.y);
+            //todo:为什么在tilemap原地跳跃的时候，水平方向会有速度的变化，只能被迫把速度改为0了
+            player.SetVelocity(0, rb.velocity.y);
         }
 
-        if (player.WallDetected())
+        if (player.WallDetected() && xInput != 0 && xInput == player.facingDir)
         {
+            Debug.Log("5438");
             stateMachine.ChangeState(player.wallSlide);
         }
     }

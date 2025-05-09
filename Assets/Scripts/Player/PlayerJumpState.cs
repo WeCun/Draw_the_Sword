@@ -13,7 +13,7 @@ public class PlayerJumpState : PlayerAirState
     public override void Enter()
     {
         base.Enter();
-        rb.AddForce(Vector2.up * player.initialJumpForce, ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x, 10);
         jumpTimer = 0;
         isJumping = true;
     }
@@ -27,7 +27,7 @@ public class PlayerJumpState : PlayerAirState
     {
         base.Update();
 
-        if (isJumping && Input.GetButton("Jump"))
+        if (isJumping && Input.GetKey(KeyCode.Space))
         {
             if (jumpTimer < player.maxJumpTime)
             {
@@ -42,12 +42,12 @@ public class PlayerJumpState : PlayerAirState
                 isJumping = false;
             }
         }
-        else if (Input.GetButtonUp("Jump"))
+        else if (Input.GetKeyUp(KeyCode.Space))
         {
             isJumping = false;
         }
 
-        if (rb.velocity.y < 0.05f)
+        if (rb.velocity.y < 0f)
         {
             stateMachine.ChangeState(player.fallState);
         }

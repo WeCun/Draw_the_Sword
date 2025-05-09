@@ -80,6 +80,7 @@ public class Entity : MonoBehaviour
     
     public void SetVelocity(float _x, float _y)
     {
+        Debug.Log("594");
         rb.velocity = new Vector2(_x, _y);
         if (_x > 0 && !facingRight)
         {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerGroundState : PlayerExtra
@@ -25,6 +26,7 @@ public class PlayerGroundState : PlayerExtra
         if (Input.GetButtonDown("Jump") && player.GroundDetected())
         {
             stateMachine.ChangeState(player.jumpState);
+            return;
         }
         
          if(Input.GetKeyDown(KeyCode.Mouse0))

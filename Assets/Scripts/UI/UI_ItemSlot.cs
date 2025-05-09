@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,12 +12,18 @@ public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public GameObject itemInSlot;
 
     public InventoryItem item;
-    
+    private UI ui;
+
+    private void Awake()
+    {
+        ui = GetComponentInParent<UI>();
+    }
+
     void Start()
     {
         //todo: 把item置为null，目前我的推论：由于InventoryItem类被[Serializable]了，Unity 可能会在反序列化时自动创建一个空实例（即使 Inspector 中未赋值），导致item不为null,所以这里还需要置为null
         //todo:但你看其他类型比如上面的image，就算他是public，但输出出来的还是null，定义了[Serializable]的类就不会
-        Debug.Log("Start: " + item);
+        //Debug.Log("Start: " + item);
         //item = null;
     }
     
@@ -61,13 +68,23 @@ public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(item.data != null)
-            GetComponentInParent<UI>().itemTip.UpdataTip(item.data, transform);
+        if (item.data != null)
+        {
+            if(item.data.itemType == ItemType.Material)
+                ui.itemTip.UpdataTip(item.data, transform);
+            else
+                ui.equipmentTip.UpdataTip(item.data as ItemData_Equipment, transform);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(item.data != null)
-            GetComponentInParent<UI>().itemTip.CloseTip();
+        if (item.data != null)
+        {
+            if(item.data.itemType == ItemType.Material)
+                ui.itemTip.CloseTip();
+            else
+                ui.equipmentTip.CloseTip();
+        }
     }
 }

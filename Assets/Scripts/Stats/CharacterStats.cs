@@ -100,8 +100,6 @@ public class CharacterStats : MonoBehaviour
 
     public int GetStatValue(StatType statType)
     {
-        Debug.Log("123");
-        Debug.Log(maxHealth.GetValue());
         if(statType == StatType.maxHealth) return maxHealth.GetValue();
         if(statType == StatType.damage) return damage.GetValue();
         if(statType == StatType.critChance) return critChance.GetValue();

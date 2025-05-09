@@ -15,10 +15,11 @@ MonoBehaviour:
   itemType: 1
   itemName: Nice
   icon: {fileID: 998750072, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
+  description: 
   equipmentType: 0
   maxHealth: 0
   armor: 0
-  evasion: 0
+  evasion: -3
   damage: 10
   critChance: 20
   cirtPower: 10

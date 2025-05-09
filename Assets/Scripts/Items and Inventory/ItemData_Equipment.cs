@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 public enum EquipmentType
@@ -12,6 +13,8 @@ public enum EquipmentType
 public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
+
+    public StringBuilder sb = new StringBuilder();
     
     [Header("basic stats")]
     public int maxHealth;
@@ -48,5 +51,41 @@ public class ItemData_Equipment : ItemData
         playerStats.cirtPower.RemoveModifier(cirtPower);
         playerStats.armor.RemoveModifier(armor);
         playerStats.evasion.RemoveModifier(evasion);
+    }
+
+    //获取装备加成描述
+    public string GetEquipmentStatDes()
+    {
+        sb.Clear();//似乎与sb.Length = 0等价
+        
+        AddStatDes("maxHealth", maxHealth);
+        AddStatDes("armor", armor);
+        AddStatDes("evasion", evasion);
+        AddStatDes("damage", damage);
+        AddStatDes("critChance", critChance);
+        AddStatDes("cirtPower", cirtPower);
+        
+        
+        return sb.ToString();
+    }
+
+    //获取属性加成描述
+    private void AddStatDes(string statName, int _value)
+    {
+        if (_value != 0)
+        {
+            if (sb.Length != 0) sb.AppendLine();
+            
+            string c = "+ ";
+            if (_value < 0)
+            {
+                c = "- ";
+                _value = -_value;
+            }
+            else c = "+ ";
+            
+            
+            sb.Append(c + _value + " " + statName);
+        }
     }
 }
