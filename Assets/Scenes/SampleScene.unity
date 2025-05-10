@@ -3683,7 +3683,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 4.03, z: -10}
+  m_LocalPosition: {x: 4.78, y: 6.24, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5732,7 +5732,7 @@ MonoBehaviour:
   descriptionText: {fileID: 1443645152}
   typeText: {fileID: 626620580}
   statText: {fileID: 1487350853}
-  offset: {x: 60, y: -35, z: 0}
+  offset: {x: 35, y: -35, z: 0}
 --- !u!224 &802015805
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5929,8 +5929,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -392, y: 29}
-  m_SizeDelta: {x: 1443.2483, y: 923.94116}
+  m_AnchoredPosition: {x: -168, y: 70}
+  m_SizeDelta: {x: 1277.6304, y: 828.8643}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &812174291
 GameObject:
@@ -6306,7 +6306,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -6319,7 +6319,7 @@ Transform:
   m_GameObject: {fileID: 830991229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 4.03, z: 0}
+  m_LocalPosition: {x: 4.78, y: 6.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12406,7 +12406,7 @@ Transform:
   m_GameObject: {fileID: 1496455002}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 4.03, z: -10}
+  m_LocalPosition: {x: 4.78, y: 6.24, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

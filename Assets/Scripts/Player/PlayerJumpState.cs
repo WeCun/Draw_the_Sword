@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerJumpState : PlayerAirState
@@ -12,10 +11,15 @@ public class PlayerJumpState : PlayerAirState
 
     public override void Enter()
     {
+        //todo:这里就不能直接继承PlayState的的enter了，这里需要先把速度提上去再Setbool，不然初始的速度为0，会有一帧的动画是下降的，然后才是上升
+        //应该也不是这个原因，在这帧加个player.anim.SetFloat("yVelocity", rb.velocity.y);更新yVelocity就可以了
         base.Enter();
-        rb.velocity = new Vector2(rb.velocity.x, 10);
+        
+        rb.velocity = new Vector2(rb.velocity.x, player.initialJumpForce);
         jumpTimer = 0;
         isJumping = true;
+        
+        player.anim.SetFloat("yVelocity", rb.velocity.y);
     }
 
     public override void Exit()
@@ -26,7 +30,7 @@ public class PlayerJumpState : PlayerAirState
     public override void Update()
     {
         base.Update();
-
+        
         if (isJumping && Input.GetKey(KeyCode.Space))
         {
             if (jumpTimer < player.maxJumpTime)

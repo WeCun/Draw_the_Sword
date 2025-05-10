@@ -23,7 +23,7 @@ public class PlayerGroundState : PlayerExtra
     public override void Update()
     {
         base.Update();
-        if (Input.GetButtonDown("Jump") && player.GroundDetected())
+        if (Input.GetKeyDown(KeyCode.Space) && player.GroundDetected())
         {
             stateMachine.ChangeState(player.jumpState);
             return;

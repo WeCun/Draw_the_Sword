@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class UI_EquipmentTip : MonoBehaviour
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        
     }
 
     public void UpdataTip(ItemData_Equipment item, Transform itemPos)
@@ -48,6 +50,7 @@ public class UI_EquipmentTip : MonoBehaviour
         }
         
         transform.position = finnalPos;
+        //transform.position = itemPos.position + offset;
     }
     
 
