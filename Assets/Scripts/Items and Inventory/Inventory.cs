@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveManager
 {
     public static Inventory instance;
     [SerializeField] private List<InventoryItem> inventory;
@@ -24,6 +25,12 @@ public class Inventory : MonoBehaviour
     public UI_ItemSlot[] stashSlots;
     public UI_EquipmentSlot[] equipmentSlots;
     public UI_StatSlot[] statSlots;
+
+    [Header("Data base")] 
+    public string[] assetNames;
+    public List<ItemData> itemDataBase;
+    public List<ItemData> loadedItems;
+    
     void Awake()
     {
         if (instance != null)
@@ -187,5 +194,34 @@ public class Inventory : MonoBehaviour
         }
         
         UpdateSlot();
+    }
+
+    public void LoadData(GameData _data)
+    {
+        GetItemDataBase();
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        
+    }
+
+    private List<ItemData> GetItemDataBase()
+    {
+        itemDataBase = new List<ItemData>();
+        //搜索Assets/Data/Equipment目录（包含子目录）下的所有资源，返回它们的全局唯一标识符（GUID）数组。
+        assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data/Equipment" });
+
+        foreach (string SOName in assetNames)
+        {
+            //将资源的GUID转换为项目相对路径（如"Assets/Data/Equipment/Sword.asset"）
+            //路径字符串。若GUID无效或资源不存在，返回空字符串。
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
+            //根据路径加载指定类型的资源对象（此处为ItemData类型的ScriptableObject）
+            var itemData = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
+            itemDataBase.Add(itemData);
+        }
+        
+        return itemDataBase;
     }
 }
