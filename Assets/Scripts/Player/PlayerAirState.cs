@@ -40,7 +40,6 @@ public class PlayerAirState : PlayerExtra
 
         if (player.WallDetected() && xInput != 0 && xInput == player.facingDir)
         {
-            Debug.Log("5438");
             stateMachine.ChangeState(player.wallSlide);
         }
     }

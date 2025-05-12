@@ -37,7 +37,7 @@ public class SaveManager : MonoBehaviour
     private void LoadGame()
     {
         //game data = data from data handle
-        dataHandler.Load();
+        gameData = dataHandler.Load();
         
         if (gameData == null)
         {

@@ -9,6 +9,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
     [SerializeField] private List<TKey> keys = new List<TKey>();
     [SerializeField] private List<TValue> values = new List<TValue>();
 
+    // 序列化前：将字典内容转存到列表
     public void OnBeforeSerialize()
     {
         keys.Clear();
@@ -21,6 +22,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         }
     }
 
+    // 反序列化后：从列表重建字典
     public void OnAfterDeserialize()
     {
         if (keys.Count != values.Count)

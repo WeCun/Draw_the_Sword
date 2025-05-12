@@ -20,10 +20,12 @@ public class PlayerManager : MonoBehaviour, ISaveManager
     public void LoadData(GameData _data)
     {
         currency = _data.currency;
+        player.transform.position = _data.playerPos;
     }
 
     public void SaveData(ref GameData _data)
     {
         _data.currency = currency;
+        _data.playerPos = player.transform.position;
     }
 }

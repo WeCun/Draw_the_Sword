@@ -27,8 +27,6 @@ public class Inventory : MonoBehaviour, ISaveManager
     public UI_StatSlot[] statSlots;
 
     [Header("Data base")] 
-    public string[] assetNames;
-    public List<ItemData> itemDataBase;
     public List<ItemData> loadedItems;
     
     void Awake()
@@ -37,10 +35,7 @@ public class Inventory : MonoBehaviour, ISaveManager
             Destroy(gameObject);
         else
             instance = this;
-    }
-
-    void Start()
-    {
+        
         inventory = new List<InventoryItem>();
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
         stash = new List<InventoryItem>();
@@ -52,6 +47,11 @@ public class Inventory : MonoBehaviour, ISaveManager
         stashSlots = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlots = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
         statSlots = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
+    }
+
+    void Start()
+    {
+        UpdateSlot();
     }
 
     public void UpdateSlot()
@@ -198,20 +198,69 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     public void LoadData(GameData _data)
     {
-        GetItemDataBase();
+        foreach (KeyValuePair<int, string> pair in _data.inventory)
+        {
+            foreach (var item in GetItemDataBase())
+            { 
+                Debug.Log(item);
+                Debug.Log(pair.Value);
+                if (item.itemId == pair.Value)
+                {
+                    InventoryItem newItem = new InventoryItem(item);
+                    inventorySlots[pair.Key].item = newItem;
+                }
+            }
+        }
+
+        foreach (KeyValuePair<string, int> pair in _data.stash)
+        {
+            foreach (var item in GetItemDataBase())
+            {
+                if (item.itemId == pair.Key)
+                {
+                    InventoryItem newItem = new InventoryItem(item);
+                    newItem.stackSize = pair.Value;
+                    int id = _data.stashPos[pair.Key];
+                    stashSlots[id].item = newItem;
+                    stashDictionary.Add(newItem.data, newItem);
+                }
+            }
+        }
     }
 
     public void SaveData(ref GameData _data)
     {
-        
+        _data.inventory.Clear();
+        _data.stash.Clear();
+        _data.stashPos.Clear();
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].item.data != null)
+            {
+               _data.inventory.Add(i, inventorySlots[i].item.data.itemId); 
+            }
+        }
+
+        for (int i = 0; i < stashSlots.Length; i++)
+        {
+            if (stashSlots[i].item.data != null)
+            {
+               _data.stash.Add(stashSlots[i].item.data.itemId, stashSlots[i].item.stackSize);
+               _data.stashPos.Add(stashSlots[i].item.data.itemId, i);
+            }
+        }
     }
 
+    //返回"Assets/Data/Equipment"地址中的itemdata物品
     private List<ItemData> GetItemDataBase()
     {
-        itemDataBase = new List<ItemData>();
+        List<ItemData> itemDataBase = new List<ItemData>();
         //搜索Assets/Data/Equipment目录（包含子目录）下的所有资源，返回它们的全局唯一标识符（GUID）数组。
-        assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data/Equipment" });
-
+        string[] assetNames = AssetDatabase.FindAssets("", new[] {"Assets/Data/Items/Equipment", "Assets/Data/Items/Materials"});
+        //todo:不知道为啥又突然不可以搜索子目录了
+        //string[] assetNames = AssetDatabase.FindAssets("", new[] {"Assets/Data/Items"});
+        
         foreach (string SOName in assetNames)
         {
             //将资源的GUID转换为项目相对路径（如"Assets/Data/Equipment/Sword.asset"）
