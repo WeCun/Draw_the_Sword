@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI : MonoBehaviour
@@ -10,7 +11,14 @@ public class UI : MonoBehaviour
     
     public UI_ItemTip itemTip;
     public UI_EquipmentTip equipmentTip;
-    
+    [SerializeField] private ScreenFader screenFader;
+
+    private void Start()
+    {
+        //StartCoroutine(ScreenFateOut());
+        //screenFader.FadeOut();
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
@@ -34,5 +42,10 @@ public class UI : MonoBehaviour
         }
         
         Inventory.instance.UpdateSlot();
+    }
+
+    public IEnumerator ScreenFateOut()
+    {
+        yield return screenFader.FadeOut();
     }
 }

@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 public enum StatType
 {
     maxHealth,
@@ -33,6 +36,13 @@ public class CharacterStats : MonoBehaviour
     public int armorConstant;
     public int currentHealth;
     public bool isInvincible;
+    
+    public Action onHealthChanged;
+
+    public void Start()
+    {
+        currentHealth = GetMaxHealth();
+    }
 
     public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 _knockbackPower, float _knockTime)
     {
@@ -65,6 +75,8 @@ public class CharacterStats : MonoBehaviour
     {
         currentHealth -= _damage;
         
+        //血量更改
+        onHealthChanged?.Invoke();
         if (currentHealth <= 0)
             Die();
     }
@@ -111,5 +123,10 @@ public class CharacterStats : MonoBehaviour
         if(statType == StatType.vitality) return vitality.GetValue();
         Debug.Log("123");
         return 0;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth.GetValue() + vitality.GetValue() * 3;
     }
 }

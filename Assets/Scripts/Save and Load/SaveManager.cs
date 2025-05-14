@@ -19,13 +19,13 @@ public class SaveManager : MonoBehaviour
             Destroy(instance.gameObject);
         else
             instance = this;
+        
+        saveManagers = FindAllSaveManagers();
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
     }
 
     private void Start()
     {
-        saveManagers = FindAllSaveManagers();
-        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
-        
         LoadGame();
     }
 
@@ -75,5 +75,20 @@ public class SaveManager : MonoBehaviour
         IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
 
         return new List<ISaveManager>(saveManagers);
+    }
+
+    public void DeleteSaveDate()
+    {
+        dataHandler.Delete();
+    }
+    
+    public bool HasSaveDate()
+    {
+        if (dataHandler.Load() == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

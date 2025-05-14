@@ -79,4 +79,13 @@ public class FileDataHandler
         
         return loadData;
     }
+
+    //删除存储数据文件
+    public void Delete()
+    {
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        
+        if(File.Exists(fullPath))
+            File.Delete(fullPath);
+    }
 }
