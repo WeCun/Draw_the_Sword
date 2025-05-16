@@ -38,6 +38,12 @@ public class UI_StartMenu : MonoBehaviour
         StartCoroutine(TransitionScene(sceneName));
     }
 
+    public void End()
+    {
+        Debug.Log("退出游戏");
+        Application.Quit();
+    }
+
     //为什么上面从开始场景切换到游戏场景的时候需要用IEnumerator
     
     //Unity 的异步加载场景操作（通过 SceneManager.LoadSceneAsync）会将场景加载分为两个阶段：

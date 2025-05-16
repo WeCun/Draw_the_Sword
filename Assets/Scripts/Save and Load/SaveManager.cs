@@ -8,6 +8,7 @@ public class SaveManager : MonoBehaviour
     public static SaveManager instance;
 
     [SerializeField] private string fileName;
+    [SerializeField] private bool encryptData;
     
     private GameData gameData;
     private List<ISaveManager> saveManagers;
@@ -21,7 +22,7 @@ public class SaveManager : MonoBehaviour
             instance = this;
         
         saveManagers = FindAllSaveManagers();
-        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encryptData);
     }
 
     private void Start()
@@ -57,9 +58,17 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.SaveData(ref gameData);
         }
-        
-        //data handle save gameData
-        dataHandler.Save(gameData);
+
+        if (saveManagers.Count > 0)
+        {
+            //data handle save gameData
+            Debug.Log(saveManagers);
+            foreach (ISaveManager saveManager in saveManagers)
+            {
+                Debug.Log(saveManager);
+            }
+            dataHandler.Save(gameData);
+        }
     }
 
     private void OnApplicationQuit()
@@ -77,8 +86,10 @@ public class SaveManager : MonoBehaviour
         return new List<ISaveManager>(saveManagers);
     }
 
+    [ContextMenu("Delete data file")]
     public void DeleteSaveDate()
     {
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encryptData);
         dataHandler.Delete();
     }
     

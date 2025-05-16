@@ -9,10 +9,15 @@ public class FileDataHandler
     private string dataDirPath;
     private string dataFileName;
 
-    public FileDataHandler(string _dataDirPath, string _dataFileName)
+    //进行加密
+    private bool encryptData;
+    private string encryptionKey = "myEncryptionKey";
+
+    public FileDataHandler(string _dataDirPath, string _dataFileName, bool _encryptData)
     {
         dataDirPath = _dataDirPath;
         dataFileName = _dataFileName;
+        encryptData = _encryptData;
     }
 
     public void Save(GameData _data)
@@ -29,6 +34,9 @@ public class FileDataHandler
             //JsonUtility.ToJson()：Unity 内置方法，将可序列化对象（如 [Serializable] 标记的类）转换为 JSON 字符串。
             //prettyPrint: true：格式化 JSON（添加缩进和换行），方便人类阅读和调试。
             string dataToStore = JsonUtility.ToJson(_data, true);
+            
+            if (encryptData)
+                dataToStore = EncryptDecrypt(dataToStore);
             
             //FileStream：文件流，用于读写文件
             //FileMode.Create：若文件存在则覆盖，不存在则新建。
@@ -69,6 +77,9 @@ public class FileDataHandler
                     }
                 }
                 
+                if (encryptData)
+                    dataToLoad = EncryptDecrypt(dataToLoad);
+                
                 loadData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
             catch (Exception e)
@@ -87,5 +98,17 @@ public class FileDataHandler
         
         if(File.Exists(fullPath))
             File.Delete(fullPath);
+    }
+
+    private string EncryptDecrypt(string _data)
+    {
+        string modifiedData = "";
+        
+        for (int i = 0; i < _data.Length; i++)
+        {
+            modifiedData += (char)(_data[i] ^ encryptionKey[i % encryptionKey.Length]);
+        }
+        
+        return modifiedData;
     }
 }
