@@ -6,7 +6,7 @@ public class ScreenFader : MonoBehaviour
 {
     //private Animator anim;
     private Image image;
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float fadeDuration = 10f;
 
     private void Awake()
     {

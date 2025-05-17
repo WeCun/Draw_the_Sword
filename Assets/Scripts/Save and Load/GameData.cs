@@ -10,7 +10,10 @@ public class GameData
     public SerializableDictionary<int, string> inventory;
     public SerializableDictionary<string, int> stash;
     public SerializableDictionary<string, int> stashPos;
+    
     public Vector3 playerPos;
+
+    public SerializableDictionary<string, float> volumeSetting;
     
     public GameData()
     {
@@ -19,5 +22,7 @@ public class GameData
         stash = new SerializableDictionary<string, int>();
         stashPos = new SerializableDictionary<string, int>();
         playerPos = new Vector3(0, 0, 0);
+        
+        volumeSetting = new SerializableDictionary<string, float>();
     }
 }
