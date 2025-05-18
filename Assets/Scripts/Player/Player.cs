@@ -20,6 +20,8 @@ public class Player : Entity
     [Header("Dash")]
     public float dashSpeed;
     public float dashTime;
+    public float dashCooldown;
+    private float dashTimer = 0;
     
     [Header("Wall Jump")]
     public Vector2 wallJumpForce;
@@ -78,8 +80,11 @@ public class Player : Entity
     {
         base.Update();
         stateMachine.currentState.Update();
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        
+        dashTimer -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer <= 0)
         {
+            dashTimer = dashCooldown;
             dashDir = Input.GetAxisRaw("Horizontal");
 
             if (dashDir == 0)

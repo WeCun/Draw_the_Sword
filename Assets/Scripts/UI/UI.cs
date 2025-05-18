@@ -7,6 +7,7 @@ using UnityEngine;
 public class UI : MonoBehaviour, ISaveManager
 {
     public GameObject characterInformation;
+    public GameObject settingUI;
     public GameObject[] inventory;
     
     public UI_ItemTip itemTip;
@@ -26,6 +27,11 @@ public class UI : MonoBehaviour, ISaveManager
         if (Input.GetKeyDown(KeyCode.B))
         {
             characterInformation.SetActive(!characterInformation.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            settingUI.SetActive(!settingUI.activeSelf);
         }
     }
 
@@ -74,5 +80,11 @@ public class UI : MonoBehaviour, ISaveManager
         {
             _data.volumeSetting.Add(item.parameter, item.slider.value);
         }
+    }
+
+    //退出游戏
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
