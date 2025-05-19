@@ -11,6 +11,7 @@ public class PlayerDashState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.stats.isInvincible = true;
         
         stateTimer = player.dashTime;
     }
@@ -18,6 +19,7 @@ public class PlayerDashState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.stats.isInvincible = false;
     }
 
     public override void Update()

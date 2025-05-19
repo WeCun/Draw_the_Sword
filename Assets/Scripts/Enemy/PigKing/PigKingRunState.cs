@@ -47,6 +47,15 @@ public class PigKingRunState : EnemyState
             stateTimer = enemy.battleTime;
         }
         
+        if (Vector2.Distance(player.position, enemy.attackPoint.position) <= enemy.attackRadius * 3)
+        {
+            if (enemy.DetectPlayer())
+            {
+                CharacterStats stat = PlayerManager.instance.player.stats;
+                enemy.stats.DoDamage(stat, 1, enemy.knockBackForce, enemy.knockBackDuration);
+            }
+        }
+        
         if(stateTimer < 0) 
             stateMachine.ChangeState(enemy.idleState);
     }

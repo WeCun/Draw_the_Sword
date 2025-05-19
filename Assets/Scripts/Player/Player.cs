@@ -48,9 +48,7 @@ public class Player : Entity
     
     public float dashDir { get; private set; }
     public Transform attackCheck;
-    public float attackDis;
-    public Vector2 attackSize;
-    public Vector2 offset;
+    public Vector2 groundCheckSize;
     
     protected  override void Awake()
     {
@@ -96,10 +94,26 @@ public class Player : Entity
     
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinish();
 
+    public override bool GroundDetected()
+    {
+        //利用长方形进行地面检测
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, whatIsGround);
+        if (colliders.Length > 0)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
     protected override void OnDrawGizmos()
     {
-        base.OnDrawGizmos();
-
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDis * facingDir, wallCheck.position.y));
+        
+        //地面检测
+        Gizmos.DrawWireCube(groundCheck.position, groundCheckSize);
+        
+        
         if (isAttacking)
         {
             Gizmos.color = Color.red;

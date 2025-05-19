@@ -4,5 +4,18 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    
+    private Player player;
+
+    public override void Start()
+    {
+        base.Start();
+        player = PlayerManager.instance.player;
+    }
+
+    public override IEnumerator SetInvincible()
+    {
+        player.fx.InvokeRepeating("InvincibleBlink", 0,.1f);
+        yield return base.SetInvincible();
+        player.fx.CancelColorChange();
+    }
 }

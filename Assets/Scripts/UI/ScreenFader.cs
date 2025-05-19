@@ -38,6 +38,8 @@ public class ScreenFader : MonoBehaviour
             float alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration); 
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
             elapsed += Time.deltaTime;
+            
+            //暂停协程的执行，让出当前帧的控制权，并在下一帧的 Update 方法执行完毕后恢复协程
             yield return null;
         }
     }

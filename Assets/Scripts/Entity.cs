@@ -46,22 +46,28 @@ public class Entity : MonoBehaviour
     {
         if (_damageDir.position.x < transform.position.x)
             knockbackDir = 1;
-        if (_damageDir.position.x > transform.position.x)
+        else if (_damageDir.position.x > transform.position.x)
             knockbackDir = -1;
     }
 
     public virtual IEnumerator HitKnockback(Vector2 knockbackPower, float knockbackDuration)
     {
         if(knockbackDir == facingDir) Flip();
-        rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
-        yield return new WaitForSeconds(knockbackDuration);
+        float knockbackTimer = 0;
+        while (knockbackTimer < knockbackDuration)
+        {
+            rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
+            knockbackTimer += Time.deltaTime;
+            yield return null;
+        }
+        
         rb.velocity = Vector2.zero;
     }
     
     #region Collision
     
-    public bool GroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDis, whatIsGround);
-    public bool WallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDis, whatIsGround);
+    public virtual bool GroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDis, whatIsGround);
+    public virtual bool WallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDis, whatIsGround);
     
     protected virtual void OnDrawGizmos()
     {

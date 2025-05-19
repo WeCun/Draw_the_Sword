@@ -202,8 +202,6 @@ public class Inventory : MonoBehaviour, ISaveManager
         {
             foreach (var item in GetItemDataBase())
             { 
-                Debug.Log(item);
-                Debug.Log(pair.Value);
                 if (item.itemId == pair.Value)
                 {
                     InventoryItem newItem = new InventoryItem(item);

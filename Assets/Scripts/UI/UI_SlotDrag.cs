@@ -13,7 +13,7 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnBeginDrag(PointerEventData eventData)
     {
         itemSlot = GetComponentInParent<UI_ItemSlot>();
-        Debug.Log(itemSlot.item);
+        
         itemType = itemSlot.item.data.itemType;
         if(itemType == ItemType.Equipment) equipmentType = (itemSlot.item.data as ItemData_Equipment).equipmentType;
         orinalParent = transform.parent;
@@ -44,7 +44,6 @@ public class UI_SlotDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         //判断是否在物品上
         foreach (var result in results)
         {
-            Debug.Log(result.gameObject.name);
             if (result.gameObject.GetComponent<UI_EquipmentSlot>() != null)
             {
                isEquipmentSlot = true;

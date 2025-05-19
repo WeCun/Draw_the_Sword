@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -36,10 +37,11 @@ public class CharacterStats : MonoBehaviour
     public int armorConstant;
     public int currentHealth;
     public bool isInvincible;
-    
+
+    public float invincibleDuration;
     public Action onHealthChanged;
 
-    public void Start()
+    public virtual void Start()
     {
         currentHealth = GetMaxHealth();
     }
@@ -47,7 +49,8 @@ public class CharacterStats : MonoBehaviour
     public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 _knockbackPower, float _knockTime)
     {
         //判断此攻击会否会被闪避以及是否处于无敌状态
-        if (TargetIsAvoid(_target) || _target.isInvincible)
+        //先判断是否无敌，再判断是否会被闪避
+        if (_target.isInvincible || TargetIsAvoid(_target))
             return;
         
         int totalDamage = Mathf.RoundToInt((strength.GetValue() + damage.GetValue()) * _damageMultiplier);
@@ -58,6 +61,8 @@ public class CharacterStats : MonoBehaviour
            float critDamage = totalCritPower * totalDamage;
            totalDamage = Mathf.RoundToInt(critDamage);
         }
+
+        _target.StartCoroutine("SetInvincible");
         
         //受击FX
         _target.GetComponent<Entity>().SetKnockbackDir(transform);
@@ -81,7 +86,7 @@ public class CharacterStats : MonoBehaviour
             Die();
     }
 
-    private void Die()
+    public virtual void Die()
     {
         Debug.Log("Die");
     }
@@ -104,6 +109,7 @@ public class CharacterStats : MonoBehaviour
         if (Random.Range(0, 100) < totalEvasion)
         {
             Debug.Log("Miss!");
+            _target.StartCoroutine("SetInvincible");
             return true;
         }
 
@@ -128,5 +134,12 @@ public class CharacterStats : MonoBehaviour
     public int GetMaxHealth()
     {
         return maxHealth.GetValue() + vitality.GetValue() * 3;
+    }
+
+    public virtual IEnumerator SetInvincible()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibleDuration);
+        isInvincible = false;
     }
 }

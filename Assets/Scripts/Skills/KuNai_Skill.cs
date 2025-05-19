@@ -14,6 +14,10 @@ public class KuNai_Skill : Skill
     [SerializeField] private float spaceBetweenDots;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private Transform dotsParent;
+    
+    public int kunaiDamage = 1;
+    public Vector2 kunaiKnockback;
+    public float kunaiKnockbackDuration = 0.5f;
 
     private GameObject[] dots;
     private Vector2 finnalDir;
@@ -41,7 +45,6 @@ public class KuNai_Skill : Skill
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             finnalDir = new Vector2(AimDirection().normalized.x * lanunchForce.x, AimDirection().normalized.y * lanunchForce.y);
-            
         }
     }
 
@@ -50,7 +53,7 @@ public class KuNai_Skill : Skill
         GameObject newKuNai = Instantiate(kunaiPrefab, dotsParent.transform.position, transform.rotation);
         KuNai_Skill_Controller newKuNaiScripts = newKuNai.GetComponent<KuNai_Skill_Controller>();
         
-        newKuNaiScripts.SetKuNai(kunaiGravity, finnalDir);
+        newKuNaiScripts.SetKuNai(kunaiGravity, finnalDir, kunaiDamage, kunaiKnockback, kunaiKnockbackDuration);
         SetDotsActive(false);
     }
 

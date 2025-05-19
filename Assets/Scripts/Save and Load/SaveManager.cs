@@ -62,11 +62,6 @@ public class SaveManager : MonoBehaviour
         if (saveManagers.Count > 0)
         {
             //data handle save gameData
-            Debug.Log(saveManagers);
-            foreach (ISaveManager saveManager in saveManagers)
-            {
-                Debug.Log(saveManager);
-            }
             dataHandler.Save(gameData);
         }
     }
