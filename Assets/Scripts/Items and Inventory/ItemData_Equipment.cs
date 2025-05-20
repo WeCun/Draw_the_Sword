@@ -65,7 +65,6 @@ public class ItemData_Equipment : ItemData
         AddStatDes("critChance", critChance);
         AddStatDes("cirtPower", cirtPower);
         
-        
         return sb.ToString();
     }
 

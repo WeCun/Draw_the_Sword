@@ -122,6 +122,34 @@ public class Inventory : MonoBehaviour, ISaveManager
         }
     }
 
+    public bool CanPickUp(ItemData _item)
+    {
+        //判断装备背包是否可以放入
+        if (_item.itemType == ItemType.Equipment)
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i].item.data == null)
+                {
+                    return true;
+                }
+            }
+        }
+        //判断stash背包是否可以放入
+        else
+        {
+            for (int i = 0; i < stashSlots.Length; i++)
+            {
+                if (stashSlots[i].item.data == null)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
     private void AddEquipment(ItemData _item)
     {
         //装备不叠加
@@ -149,52 +177,52 @@ public class Inventory : MonoBehaviour, ISaveManager
     }
     
     //移除物品
-    public void RemoveItem(ItemData _item)
-    {
-        if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
-        {
-            if (value.stackSize <= 1)
-            {
-                for (int i = 0; i < inventorySlots.Length; i++)
-                {
-                    if (inventorySlots[i].item == value)
-                    {
-                        inventorySlots[i].item = null;
-                        break;
-                    }
-                }
-                inventory.Remove(value);
-                inventoryDictionary.Remove(_item);
-            }
-            else
-            {
-                value.RemoveStack();
-            }
-        }
-
-        if (stashDictionary.TryGetValue(_item, out InventoryItem stashValue))
-        {
-            if (stashValue.stackSize <= 1)
-            {
-                for (int i = 0; i < stashSlots.Length; i++)
-                {
-                    if (stashSlots[i].item == stashValue)
-                    {
-                        stashSlots[i].item = null;  
-                        break;
-                    }
-                }
-                stash.Remove(stashValue);
-                stashDictionary.Remove(_item);
-            }
-            else
-            {
-                stashValue.RemoveStack();
-            }
-        }
-        
-        UpdateSlot();
-    }
+    // public void RemoveItem(ItemData _item)
+    // {
+    //     if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
+    //     {
+    //         if (value.stackSize <= 1)
+    //         {
+    //             for (int i = 0; i < inventorySlots.Length; i++)
+    //             {
+    //                 if (inventorySlots[i].item == value)
+    //                 {
+    //                     inventorySlots[i].item = null;
+    //                     break;
+    //                 }
+    //             }
+    //             inventory.Remove(value);
+    //             inventoryDictionary.Remove(_item);
+    //         }
+    //         else
+    //         {
+    //             value.RemoveStack();
+    //         }
+    //     }
+    //
+    //     if (stashDictionary.TryGetValue(_item, out InventoryItem stashValue))
+    //     {
+    //         if (stashValue.stackSize <= 1)
+    //         {
+    //             for (int i = 0; i < stashSlots.Length; i++)
+    //             {
+    //                 if (stashSlots[i].item == stashValue)
+    //                 {
+    //                     stashSlots[i].item = null;  
+    //                     break;
+    //                 }
+    //             }
+    //             stash.Remove(stashValue);
+    //             stashDictionary.Remove(_item);
+    //         }
+    //         else
+    //         {
+    //             stashValue.RemoveStack();
+    //         }
+    //     }
+    //     
+    //     UpdateSlot();
+    // }
 
     public void LoadData(GameData _data)
     {
@@ -236,7 +264,7 @@ public class Inventory : MonoBehaviour, ISaveManager
         {
             if (inventorySlots[i].item.data != null)
             {
-               _data.inventory.Add(i, inventorySlots[i].item.data.itemId); 
+               _data.inventory.Add(i, inventorySlots[i].item.data.itemId);
             }
         }
 

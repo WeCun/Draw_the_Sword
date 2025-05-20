@@ -33,6 +33,9 @@ public class Player : Entity
     
     public PlayerAttackController attackController;
     public bool isAttacking = false;
+
+    
+    #region State
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -45,7 +48,8 @@ public class Player : Entity
     public PlayerPrimaryAttackState primaryAttack { get; private set; }
     public PlayerAimState aimState { get; private set; }
     public PlayerDoubleJumpState doubleJump { get; private set; }
-    
+    public PlayerDieState dieState { get; private set; }
+    #endregion
     public float dashDir { get; private set; }
     public Transform attackCheck;
     public Vector2 groundCheckSize;
@@ -64,6 +68,7 @@ public class Player : Entity
         primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
         aimState = new PlayerAimState(this, stateMachine, "Aim");
         doubleJump = new PlayerDoubleJumpState(this, stateMachine, "Jump");
+        dieState = new PlayerDieState(this, stateMachine, "Die");
     }
 
     protected  override void Start()
@@ -104,6 +109,12 @@ public class Player : Entity
         }
         
         return false;
+    }
+    
+    public IEnumerator DeadCanvas()
+    {
+        yield return new WaitForSeconds(1f);
+        GameObject.Find("Canvas").GetComponent<UI>().GameOverOfDead();
     }
     
     protected override void OnDrawGizmos()

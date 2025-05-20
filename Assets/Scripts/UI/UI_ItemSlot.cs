@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Image image;
     public TextMeshProUGUI text;
@@ -68,7 +68,7 @@ public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item.data != null)
+        if (item != null && item.data != null)
         {
             if(item.data.itemType == ItemType.Material)
                 ui.itemTip.UpdataTip(item.data, transform);
@@ -79,12 +79,32 @@ public class UI_ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (item.data != null)
+        if (item != null && item.data != null)
         {
             if(item.data.itemType == ItemType.Material)
                 ui.itemTip.CloseTip();
             else
                 ui.equipmentTip.CloseTip();
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (item.data != null)
+            {
+                if(item.stackSize > 1) item.stackSize--;
+                else
+                {
+                    if(item.data.itemType == ItemType.Material)
+                        ui.itemTip.CloseTip();
+                    else
+                        ui.equipmentTip.CloseTip();
+                    item.data = null;
+                }
+                UpdateSlot();
+            }
         }
     }
 }

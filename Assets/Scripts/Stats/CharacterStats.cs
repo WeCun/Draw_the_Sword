@@ -40,17 +40,19 @@ public class CharacterStats : MonoBehaviour
 
     public float invincibleDuration;
     public Action onHealthChanged;
+    protected bool isDead = false;
 
     public virtual void Start()
     {
         currentHealth = GetMaxHealth();
+        isDead = false;
     }
 
     public void DoDamage(CharacterStats _target, float _damageMultiplier, Vector2 _knockbackPower, float _knockTime)
     {
         //判断此攻击会否会被闪避以及是否处于无敌状态
         //先判断是否无敌，再判断是否会被闪避
-        if (_target.isInvincible || TargetIsAvoid(_target))
+        if (_target.isDead || _target.isInvincible || TargetIsAvoid(_target))
             return;
         
         int totalDamage = Mathf.RoundToInt((strength.GetValue() + damage.GetValue()) * _damageMultiplier);

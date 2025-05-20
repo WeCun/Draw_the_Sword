@@ -16,6 +16,7 @@ public class PigKingHitState : EnemyState
     {
         base.Start();
         player = PlayerManager.instance.player.transform;
+        //调用受击特效
         enemy.fx.InvokeRepeating("RedColorBlink", 0, .1f);
         stateTimer = enemy.hitDuration;
     }

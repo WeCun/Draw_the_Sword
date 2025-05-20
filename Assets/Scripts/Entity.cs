@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     public CharacterStats stats { get; private set; }
     public EntityFX fx { get; private set; }
 
+    [Header("Check")]
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDis;
     [SerializeField] protected LayerMask whatIsGround;
@@ -17,7 +18,6 @@ public class Entity : MonoBehaviour
     public int facingDir = 1;
     protected bool facingRight = true;
     public int knockbackDir = 1;
-    public bool isKnocked = false;
     
     protected virtual void Awake()
     {
@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour
         
     }
     
+    //设置击退方向
     public virtual void SetKnockbackDir(Transform _damageDir)
     {
         if (_damageDir.position.x < transform.position.x)
@@ -50,6 +51,7 @@ public class Entity : MonoBehaviour
             knockbackDir = -1;
     }
 
+    //用协程实现击退效果
     public virtual IEnumerator HitKnockback(Vector2 knockbackPower, float knockbackDuration)
     {
         if(knockbackDir == facingDir) Flip();

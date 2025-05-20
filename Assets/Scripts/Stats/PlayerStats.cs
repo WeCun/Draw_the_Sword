@@ -12,6 +12,14 @@ public class PlayerStats : CharacterStats
         player = PlayerManager.instance.player;
     }
 
+    public override void Die()
+    {
+        base.Die();
+        isDead = true;
+        player.stateMachine.ChangeState(player.dieState);
+        StartCoroutine(player.DeadCanvas());
+    }
+
     public override IEnumerator SetInvincible()
     {
         player.fx.InvokeRepeating("InvincibleBlink", 0,.1f);

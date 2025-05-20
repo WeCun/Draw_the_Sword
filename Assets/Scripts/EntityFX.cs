@@ -23,6 +23,7 @@ public class EntityFX : MonoBehaviour
 
     public void CancelColorChange()
     {
+        //会立即停止当前脚本中所有通过Invoke或InvokeRepeating启动的方法
         CancelInvoke("RedColorBlink");
         CancelInvoke("InvincibleBlink");
         sr.color = Color.white;
@@ -36,7 +37,7 @@ public class EntityFX : MonoBehaviour
         }
         else
         {
-            sr.color = new Color(1, 1, 1, 0.3f);
+            sr.color = new Color(0, 0, 0, 1f);
         }
     }
 }

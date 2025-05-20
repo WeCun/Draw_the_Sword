@@ -58,14 +58,16 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.SaveData(ref gameData);
         }
-
+        
         if (saveManagers.Count > 0)
         {
             //data handle save gameData
             dataHandler.Save(gameData);
         }
     }
-
+    
+    //仅在整个应用程序退出时触发,当用户主动关闭游戏（如点击窗口关闭按钮、退出移动端App）时才会调用。
+    //与场景切换无关,场景切换属于应用程序内部状态变化，不会触发应用级的退出事件。
     private void OnApplicationQuit()
     {
         SaveGame(); 

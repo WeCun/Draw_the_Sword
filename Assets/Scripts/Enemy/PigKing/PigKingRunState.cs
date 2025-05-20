@@ -5,6 +5,8 @@ using UnityEngine;
 public class PigKingRunState : EnemyState
 {
     private PigKing enemy;
+    
+    //记录转向时间
     private float turnTimer;
     private Transform player;
     private int runDir;
@@ -29,6 +31,7 @@ public class PigKingRunState : EnemyState
     public override void Update()
     {
         base.Update();
+        
         turnTimer -= Time.deltaTime;
         if (player.position.x > enemy.transform.position.x && turnTimer < 0)
         {
@@ -47,6 +50,7 @@ public class PigKingRunState : EnemyState
             stateTimer = enemy.battleTime;
         }
         
+        //在这个范围开始检测角色是否到达攻击范围
         if (Vector2.Distance(player.position, enemy.attackPoint.position) <= enemy.attackRadius * 3)
         {
             if (enemy.DetectPlayer())
@@ -56,6 +60,7 @@ public class PigKingRunState : EnemyState
             }
         }
         
+        //追逐时间内都没看到角色切换状态
         if(stateTimer < 0) 
             stateMachine.ChangeState(enemy.idleState);
     }

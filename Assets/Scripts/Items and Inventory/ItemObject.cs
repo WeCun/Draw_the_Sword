@@ -19,8 +19,11 @@ public class ItemObject : MonoBehaviour
     {
         if (collider.GetComponent<Player>() != null)
         {
-            Inventory.instance.AddItem(itemData);
-            Destroy(gameObject);
+            if (Inventory.instance.CanPickUp(itemData))
+            {
+                Inventory.instance.AddItem(itemData);
+                Destroy(gameObject);
+            }
         }
     }
 }

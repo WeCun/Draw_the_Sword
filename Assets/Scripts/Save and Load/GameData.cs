@@ -13,7 +13,7 @@ public class GameData
     
     public Vector3 playerPos;
 
-    public SerializableDictionary<string, float> volumeSetting;
+    //public SerializableDictionary<string, float> volumeSetting;
     
     public GameData()
     {
@@ -23,6 +23,6 @@ public class GameData
         stashPos = new SerializableDictionary<string, int>();
         playerPos = new Vector3(0, 0, 0);
         
-        volumeSetting = new SerializableDictionary<string, float>();
+        //volumeSetting = new SerializableDictionary<string, float>();
     }
 }

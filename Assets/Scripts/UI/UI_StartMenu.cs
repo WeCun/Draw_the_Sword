@@ -11,6 +11,8 @@ public class UI_StartMenu : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private TextMeshProUGUI continueText;
     [SerializeField] private ScreenFader screenFader;
+    [SerializeField] private GameObject settingUI;
+    
 
     private void Start()
     {
@@ -25,6 +27,12 @@ public class UI_StartMenu : MonoBehaviour
 
             continueText.color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            settingUI.SetActive(!settingUI.activeSelf);
     }
 
     public void ContinueGame()
@@ -43,6 +51,12 @@ public class UI_StartMenu : MonoBehaviour
         Debug.Log("退出游戏");
         Application.Quit();
     }
+    
+    //退出游戏
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
     //为什么上面从开始场景切换到游戏场景的时候需要用IEnumerator
     
@@ -56,32 +70,6 @@ public class UI_StartMenu : MonoBehaviour
     private IEnumerator TransitionScene(string _sceneName)
     {
         yield return screenFader.FadeIn();
-        yield return StartCoroutine(LoadGameSceneAsync(_sceneName));
-        yield return screenFader.FadeOut();
-    }
-    
-    private IEnumerator LoadGameSceneAsync(string _sceneName)
-    {
-        //调用 SceneManager.LoadSceneAsync 开始异步加载场景，返回 AsyncOperation 对象以监控加载状态
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_sceneName);
-        
-        //当 allowSceneActivation = true 时，场景加载到 90% 后会自动进入激活阶段，进度直接跳至 100%
-        asyncLoad.allowSceneActivation = false;
-
-        
-        while (!asyncLoad.isDone)
-        {
-            float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
-            Debug.Log($"当前进度:{progress * 100}%");
-
-            if (asyncLoad.progress >= 0.9f)
-            {
-                // 手动激活场景切换
-                asyncLoad.allowSceneActivation = true;
-            }
-            
-            // 每帧暂停，等待加载
-            yield return null;
-        }
+        yield return StartCoroutine(SceneLoadManager.instance.LoadGameSceneAsync(_sceneName));
     }
 }

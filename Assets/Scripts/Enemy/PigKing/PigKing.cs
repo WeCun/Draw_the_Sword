@@ -59,6 +59,7 @@ public class PigKing : Enemy
         base.Update();
     }
 
+    //改变怪物的状态为受击状态
     public override void ChangeHitState(float _hitDuration)
     {
         hitDuration = _hitDuration;
@@ -70,10 +71,13 @@ public class PigKing : Enemy
     {
         base.OnDrawGizmos();
         Gizmos.color = Color.red;
+        //检测任务的线
         Gizmos.DrawLine(wallCheck.position+ new Vector3(0, .15f), new Vector3(wallCheck.position.x + playerCheckDis * facingDir, wallCheck.position.y + 0.15f));
+        //角色受到伤害的范围
         Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 
+    //检测角色是否进入攻击范围
     public bool DetectPlayer()
     {
         Collider2D collider = Physics2D.OverlapCircle(attackPoint.position, attackRadius, whatIsPlayer);

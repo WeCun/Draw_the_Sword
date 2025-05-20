@@ -7,7 +7,6 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
     
-    
     public KuNai_Skill kunai { get; private set; }
     
     private void Awake()
